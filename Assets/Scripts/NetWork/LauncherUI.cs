@@ -6,8 +6,8 @@ using Photon.Pun;
 
 public class LauncherUI : MonoBehaviour
 {
-    [SerializeField] private GameObject RoomPanel;
-    [SerializeField] private TextMeshProUGUI pingText,conectedToRegionText, conectingText;
+    [SerializeField] private GameObject RoomPanel,MenuPanel;
+    [SerializeField] private TextMeshProUGUI pingText,conectedToRegionText, conectingText,logText;
 
     public void showRoomPanel()
     {
@@ -16,14 +16,27 @@ public class LauncherUI : MonoBehaviour
         conectedToRegionText.text = "Conected to " +PhotonNetwork.CloudRegion;
     }
 
-    public void ShowJoiningText()
+    public void ShowJoiningText(string text)
     {
         conectingText.gameObject.SetActive(true);
-        conectingText.text = "JOINING...";
+        conectingText.text = text + "...";
+    }
+    public void showMainPanel()
+    {
+        MenuPanel.SetActive(true);
+        RoomPanel.SetActive(false);
+    }
+
+    public void UpdateLogText(string error)
+    {
+        logText.gameObject.SetActive(true);
+        logText.text = "Disconnected from the server by " + error;
     }
 
     void Update()
     {
         pingText.text = PhotonNetwork.GetPing().ToString();
     }
+
+
 }

@@ -58,5 +58,17 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         PhotonNetwork.JoinOrCreateRoom(name,new RoomOptions{MaxPlayers = maxPlayersPerRoom},default);
     }
 
+    public void Disconnect()
+    {
+        PhotonNetwork.Disconnect();
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        launcherUI.showMainPanel();
+        launcherUI.UpdateLogText(cause.ToString());
+        Debug.LogFormat("Disconnetcted, the reason is {0}", cause);
+    }
+
 
 }
