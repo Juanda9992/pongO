@@ -6,11 +6,13 @@ using Photon.Realtime;
 
 public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network Callbacks
 {
-    [SerializeField] private byte maxPlayersPerRoom = 2;
-    void Start()
-    {
-    }
+    [SerializeField] private LauncherUI launcherUI;
+    private byte maxPlayersPerRoom = 2;
 
+    void Awake()
+    {
+        launcherUI = GetComponent<LauncherUI>();
+    }
     public void Connect()
     {
         if(PhotonNetwork.IsConnected)
@@ -26,14 +28,14 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
 
     public override void OnConnectedToMaster()
     {
-        Debug.LogFormat("Conected to {0}" ,PhotonNetwork.CloudRegion); //When the player is connected, it will call a Debug Method and join  a random room
         PhotonNetwork.JoinLobby();
-        Debug.Log(PhotonNetwork.IsMasterClient);
+        launcherUI.showRoomPanel();
     }
 
     public override void OnJoinedLobby()
     {
-        PhotonNetwork.JoinRandomRoom();
+        Debug.Log("Joined Lobby");
+        //PhotonNetwork.JoinRandomRoom();
     }
     public override void OnJoinedRoom()
     {
@@ -43,8 +45,18 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         Debug.Log("No room avaliable, creating one...");
-        Debug.Log(PhotonNetwork.IsMasterClient);
         PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = maxPlayersPerRoom});
     }
+
+    public void JoinRandomRoom()
+    {
+        PhotonNetwork.JoinRandomRoom();
+    }
+
+    public void JoinRoomWithName(string name)
+    {
+        PhotonNetwork.JoinOrCreateRoom(name,new RoomOptions{MaxPlayers = maxPlayersPerRoom},default);
+    }
+
 
 }
