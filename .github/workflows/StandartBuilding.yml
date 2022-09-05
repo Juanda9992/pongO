@@ -1,4 +1,4 @@
-name: Build proh¿ject
+name: Build project
 
 on:     
   pull_request_target:
@@ -35,5 +35,5 @@ jobs:
           
       - uses: actions/upload-artifact@v2
         with:
-          name: Pongo -${{ matrix.targetPlatform }}
-          path: pongo/${{ matrix.targetPlatform }}
+          name: Build-${{ matrix.targetPlatform }}
+          path: build/${{ matrix.targetPlatform }}
