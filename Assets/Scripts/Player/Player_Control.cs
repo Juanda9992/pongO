@@ -34,4 +34,9 @@ public class Player_Control : MonoBehaviour
         rb.velocity = Vector2.zero;
     }
 
+    void Update()
+    {
+        transform.position = new Vector2(transform.position.x,Mathf.Clamp(transform.position.y,minY,maxY));
+    }
+
 }
