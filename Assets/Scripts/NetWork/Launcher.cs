@@ -8,6 +8,7 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
 {
     [SerializeField] private LauncherUI launcherUI;
     private byte maxPlayersPerRoom = 2; //Set the max players per room (is a byte)
+    private string roomName;
 
     void Awake()
     {
@@ -22,6 +23,7 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         }
         else
         {
+            launcherUI.ShowJoiningText("CONNECTING TO THE SERVER...");
             PhotonNetwork.ConnectUsingSettings(); //Else it will connect to a master server
             PhotonNetwork.GameVersion = "1";
         }
@@ -50,13 +52,26 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
     public void JoinRandomRoom()
     {
         PhotonNetwork.JoinRandomRoom(); //Joins a random room, no matter the name
+        launcherUI.ShowJoiningText("JOINING TO A ROOM...");
     }
 
-    public void JoinRoomWithName(string name)
+    public void SetRoomName(string name)
     {
-        PhotonNetwork.JoinOrCreateRoom(name,new RoomOptions{MaxPlayers = maxPlayersPerRoom},default); //When the input field are deselected, the game will create a room with the name of the value of the thext input
-        launcherUI.HideAllPanels(); //Hides all the panels
-        launcherUI.ShowJoiningText("JOINING ROOM " + name); //Displays the text with the name of the room
+        roomName = name;
+    }
+
+    public void JoinRoomWithName()
+    {
+        if(roomName != null)
+        {
+            PhotonNetwork.JoinOrCreateRoom(roomName,new RoomOptions{MaxPlayers = maxPlayersPerRoom},default); //When the input field are deselected, the game will create a room with the name of the value of the thext input
+            launcherUI.HideAllPanels(); //Hides all the panels
+            launcherUI.ShowJoiningText("JOINING ROOM... " + roomName); //Displays the text with the name of the room
+        }
+        else
+        {
+            Debug.LogWarning("THE ROOM NAME CANNOT BE EMPTY");
+        }
     }
 
     public void Disconnect()
@@ -82,7 +97,7 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         {
             if(PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom) //If the player is in a room and the room is full
             {
-                PhotonNetwork.LoadLevel(0); //The game will load the game level
+                PhotonNetwork.LoadLevel(1); //The game will load the game level
             }
         }
     }
