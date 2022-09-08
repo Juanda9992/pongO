@@ -91,16 +91,14 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         launcherUI.inRoom = false; //The player is no longer in a room
     }
 
-    private void Update()
+    public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        if(PhotonNetwork.IsMasterClient)
+        Debug.Log(newPlayer.NickName);
+        if(PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
         {
-            if(launcherUI.inRoom)
+            if(PhotonNetwork.IsMasterClient)
             {
-                if(PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom) //If the player is in a room and the room is full
-                {
-                    PhotonNetwork.LoadLevel(1); //The game will load the game level
-                }
+                PhotonNetwork.LoadLevel(1);
             }
         }
     }
