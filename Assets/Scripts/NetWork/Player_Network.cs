@@ -21,7 +21,7 @@ public class Player_Network : MonoBehaviour
             }
             else
             {
-                myPlayer = GameNetwork.gameNetworkInstance.player1;
+                myPlayer = GameNetwork.gameNetworkInstance.player2;
             }
         }
     }
