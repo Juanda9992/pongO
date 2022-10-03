@@ -23,6 +23,7 @@ public class Player_Network : MonoBehaviour
             {
                 myPlayer = GameNetwork.gameNetworkInstance.player2;
             }
+            GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer;
         }
     }
 

@@ -23,6 +23,12 @@ public class GameNetwork : MonoBehaviourPunCallbacks
     
     private void Start()
     {
+        StartCoroutine("SpawnPlayer");
+    }
+
+    private IEnumerator SpawnPlayer()
+    {
+        yield return new WaitForSeconds(1);
         PhotonNetwork.Instantiate(playerPrefab.name,Vector3.zero,Quaternion.identity);
     }
 }

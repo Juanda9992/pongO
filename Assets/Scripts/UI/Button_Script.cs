@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Button_Script : MonoBehaviour
 {
-    Player_Control localPlayer;
+    public Player_Control localPlayer;
 
     void Start()
     {
