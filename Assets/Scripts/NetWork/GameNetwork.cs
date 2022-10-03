@@ -29,6 +29,14 @@ public class GameNetwork : MonoBehaviourPunCallbacks
     private IEnumerator SpawnPlayer()
     {
         yield return new WaitForSeconds(1);
-        PhotonNetwork.Instantiate(playerPrefab.name,Vector3.zero,Quaternion.identity);
+        if(PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name,new Vector3(-7,0,0),Quaternion.identity);    
+        }
+        else
+        {
+            PhotonNetwork.Instantiate(playerPrefab.name,new Vector3(7,0,0),Quaternion.identity);
+        }
+        
     }
 }
