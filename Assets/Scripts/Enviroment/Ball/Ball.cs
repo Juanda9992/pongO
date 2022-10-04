@@ -11,12 +11,6 @@ public class Ball : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed),Random.Range(minStartSpeed,maxStartSpeed));
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed),Random.Range(minStartSpeed,maxStartSpeed)); //Adds a random speed to the ball
     }
 }
