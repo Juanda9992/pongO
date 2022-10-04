@@ -26,11 +26,11 @@ public class Ball : MonoBehaviour
     {
         if(other.CompareTag("Left"))
         {
-            view.RPC("IncreasePlayer2Score",RpcTarget.All);
+            GameObject.FindObjectOfType<Score_UI>().IncreasePlayer2Score();
         }
         else if(other.CompareTag("Right"))
         {
-            view.RPC("IncreasePlayer1Score",RpcTarget.All);
+            GameObject.FindObjectOfType<Score_UI>().IncreasePlayer1Score();
         }
     }
 }

@@ -41,6 +41,8 @@ MonoBehaviour:
   - IncreasePlayer2Score
   - DestroySpaceship
   - Fire
+  - IncreasePlayer1ScoreRPC
+  - IncreasePlayer2ScoreRPC
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
