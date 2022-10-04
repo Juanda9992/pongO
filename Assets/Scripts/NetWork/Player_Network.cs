@@ -5,7 +5,7 @@ using Photon.Pun;
 
 public class Player_Network : MonoBehaviour
 {
-    private Player_Control myPlayer;
+    private Player_Control myPlayer; //The paddle to control
 
     private PhotonView view;
     // Start is called before the first frame update
@@ -17,31 +17,31 @@ public class Player_Network : MonoBehaviour
         {
             if(PhotonNetwork.IsMasterClient)
             {
-                myPlayer = GameNetwork.gameNetworkInstance.player1;
+                myPlayer = GameNetwork.gameNetworkInstance.player1; //If the player is the master client, it will control the player 1
             }
             else
             {
-                myPlayer = GameNetwork.gameNetworkInstance.player2;
+                myPlayer = GameNetwork.gameNetworkInstance.player2; //If the user is not the master client, it will control the player 2
             }
-            GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer;
+            GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
         }
     }
 
     public void MovePlayerUp()
     {
-        myPlayer.moveUp();
+        myPlayer.moveUp(); //Move the paddle up
     }
     public void MovePlayerDown()
     {
-        myPlayer.moveDown();
+        myPlayer.moveDown(); //Move the paddle down
     }
 
     public void StopMovingPlayer()
     {
-        myPlayer.StopMoving();
+        myPlayer.StopMoving(); //Stops moving the paddle
     }
     public Player_Control GetLocalPlayer()
     {
-        return myPlayer;
+        return myPlayer; //Returns the player the user is controlling
     }
 }
