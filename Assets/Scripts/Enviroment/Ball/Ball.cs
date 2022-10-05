@@ -19,9 +19,16 @@ public class Ball : MonoBehaviour
 
     private void AddSpeed()
     {
-        rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed),Random.Range(minStartSpeed /2,maxStartSpeed/2)); //Adds a random speed to the ball
+        rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed) * Mathf.RoundToInt(Random.Range(-1,1)),Random.Range(minStartSpeed /2,maxStartSpeed/2) * Mathf.RoundToInt(Random.Range(-1,1))); //Adds a random speed to the ball
+        if(rb.velocity.x == 0)
+        {
+            rb.velocity = new Vector2(6,rb.velocity.y);
+        }
+        else if(rb.velocity.y == 0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x,6);
+        }
     }
-    
 
     private void StopBall()
     {

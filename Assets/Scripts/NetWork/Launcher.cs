@@ -60,6 +60,13 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         roomName = name;
     }
 
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log(Mathf.RoundToInt(Random.Range(-1,2)));
+        }
+    }
     public void JoinRoomWithName()
     {
         if(roomName != null)
