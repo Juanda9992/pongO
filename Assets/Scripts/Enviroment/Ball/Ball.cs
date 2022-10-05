@@ -19,7 +19,7 @@ public class Ball : MonoBehaviour
 
     private void AddSpeed()
     {
-        rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed),Random.Range(minStartSpeed,maxStartSpeed)); //Adds a random speed to the ball
+        rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed),Random.Range(minStartSpeed /2,maxStartSpeed/2)); //Adds a random speed to the ball
     }
     
 
