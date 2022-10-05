@@ -21,16 +21,26 @@ public class Ball : MonoBehaviour
     {
         rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed),Random.Range(minStartSpeed,maxStartSpeed)); //Adds a random speed to the ball
     }
+    
+
+    private void StopBall()
+    {
+        transform.position = Vector2.zero;
+        rb.velocity = Vector2.zero;
+        Invoke("AddSpeed",3);
+    }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Left"))
         {
             GameObject.FindObjectOfType<Score_UI>().IncreasePlayer2Score();
+            StopBall();
         }
         else if(other.CompareTag("Right"))
         {
             GameObject.FindObjectOfType<Score_UI>().IncreasePlayer1Score();
+            StopBall();
         }
     }
 }

@@ -17,7 +17,7 @@ public class Score_UI : MonoBehaviour
         UpdateScore();
     }
     [PunRPC]
-    public void IncreasePlayer1ScoreRPC()
+    private void IncreasePlayer1ScoreRPC()
     {
         player1Score++;
         UpdateScore();
@@ -25,15 +25,15 @@ public class Score_UI : MonoBehaviour
 
     public void IncreasePlayer1Score()
     {
-        view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.All);
+        view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.Others);
     }
     public void IncreasePlayer2Score()
     {
-        view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.All);
+        view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.Others);
     }
 
     [PunRPC]
-    public void IncreasePlayer2ScoreRPC()
+    private void IncreasePlayer2ScoreRPC()
     {
         player2Score++;
         UpdateScore();
@@ -42,6 +42,7 @@ public class Score_UI : MonoBehaviour
 
     public void UpdateScore()
     {
+        Debug.Log(player2Score);
         scoreText.text = player1Score.ToString() +"    "+ "-" +"    "+player2Score.ToString();
     }
 }
