@@ -39,4 +39,10 @@ public class GameNetwork : MonoBehaviourPunCallbacks
         }
         
     }
+
+    public void ExitMatch()
+    {
+        PhotonNetwork.LoadLevel(0);
+        PhotonNetwork.Disconnect();
+    }
 }
