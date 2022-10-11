@@ -36,9 +36,9 @@ public class CustomRoomCreator : MonoBehaviour
     {
         if(roomName != null)
         {
-            PhotonNetwork.JoinOrCreateRoom(roomName,new RoomOptions{MaxPlayers = 2, CustomRoomProperties = matchMakingOptions},TypedLobby.Default);
+            PhotonNetwork.CreateRoom(roomName,new RoomOptions{MaxPlayers = 2, CustomRoomProperties = matchMakingOptions},TypedLobby.Default);
             launcher.HideAllPanels(); //Hides all the panels
-            launcher.ShowJoiningText("JOINING ROOM... " + roomName); //Displays the text with the name of the room
+            launcher.ShowJoiningText("CREATING ROOM... " + roomName); //Displays the text with the name of the room
         }
         else
         {

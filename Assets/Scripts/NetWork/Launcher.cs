@@ -60,7 +60,8 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
     }
     public void JoinRoomWithName()
     {
-        PhotonNetwork.JoinRoom(roomName);
+        PhotonNetwork.JoinRoom(roomName.ToUpper());
+        launcherUI.ShowJoiningText("JOINING TO " + roomName + "...");
     }
 
     public void Disconnect()
