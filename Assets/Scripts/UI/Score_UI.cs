@@ -16,10 +16,17 @@ public class Score_UI : MonoBehaviour
         view = GetComponent<PhotonView>();
         UpdateScore();
     }
-    [PunRPC]
+    [PunRPC] //Remote Procedura Call
     private void IncreasePlayer1ScoreRPC()
     {
         player1Score++;
+        UpdateScore();
+    }
+
+    [PunRPC] //Remote Procedural Call
+    private void IncreasePlayer2ScoreRPC()
+    {
+        player2Score++;
         UpdateScore();
     }
 
@@ -30,13 +37,6 @@ public class Score_UI : MonoBehaviour
     public void IncreasePlayer2Score()
     {
         view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.Others);
-    }
-
-    [PunRPC]
-    private void IncreasePlayer2ScoreRPC()
-    {
-        player2Score++;
-        UpdateScore();
     }
 
 

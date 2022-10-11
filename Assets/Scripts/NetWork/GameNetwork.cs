@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine.SceneManagement;
 
 public class GameNetwork : MonoBehaviourPunCallbacks
 {
@@ -40,9 +41,12 @@ public class GameNetwork : MonoBehaviourPunCallbacks
         
     }
 
+    //Allows the player to leave the match, then it proceeds to load the main menu scene;
     public void ExitMatch()
     {
-        PhotonNetwork.LoadLevel(0);
+        PhotonNetwork.LeaveRoom();
         PhotonNetwork.Disconnect();
+        Debug.Log(PhotonNetwork.InRoom);
+        SceneManager.LoadScene(0);
     }
 }

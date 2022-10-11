@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun; //Photon Pun namespace
 using Photon.Realtime;
-
 public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network Callbacks
 {
     [SerializeField] private LauncherUI launcherUI;
     private byte maxPlayersPerRoom = 2; //Set the max players per room (is a byte)
     private string roomName;
-
     void Awake()
     {
         PhotonNetwork.AutomaticallySyncScene = true; ///When the master client (the first to enter in the room) loads a level, the other user will do it
@@ -43,10 +41,11 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         //PhotonNetwork.LoadLevel(1);
     }
 
+
     public override void OnJoinRandomFailed(short returnCode, string message) //If the player cant join to the room (No room existing or all the avaliables rooms are full, it will create an empty room)
     {
         Debug.Log("No room avaliable, creating one...");
-        PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = maxPlayersPerRoom});//Creating room with the specified byte of max players per room
+        PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2});//Creating room with the specified byte of max players per room
     }
 
     public void JoinRandomRoom()
@@ -59,26 +58,9 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
     {
         roomName = name;
     }
-
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log(Mathf.RoundToInt(Random.Range(-1,2)));
-        }
-    }
     public void JoinRoomWithName()
     {
-        if(roomName != null)
-        {
-            PhotonNetwork.JoinOrCreateRoom(roomName,new RoomOptions{MaxPlayers = maxPlayersPerRoom},default); //When the input field are deselected, the game will create a room with the name of the value of the thext input
-            launcherUI.HideAllPanels(); //Hides all the panels
-            launcherUI.ShowJoiningText("JOINING ROOM... " + roomName); //Displays the text with the name of the room
-        }
-        else
-        {
-            Debug.LogWarning("THE ROOM NAME CANNOT BE EMPTY");
-        }
+        PhotonNetwork.JoinRoom(roomName);
     }
 
     public void Disconnect()
