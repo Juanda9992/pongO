@@ -19,30 +19,29 @@ public class Score_UI : MonoBehaviour
     [PunRPC] //Remote Procedura Call
     private void IncreasePlayer1ScoreRPC()
     {
-        player1Score++;
-        UpdateScore();
+        player1Score++; //Increases the player 1 score
+        UpdateScore(); //Updates the socreboard
     }
 
     [PunRPC] //Remote Procedural Call
     private void IncreasePlayer2ScoreRPC()
     {
-        player2Score++;
-        UpdateScore();
+        player2Score++;//Increases the player 2 score
+        UpdateScore(); //Updates the scoreboard
     }
 
     public void IncreasePlayer1Score()
     {
-        view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.Others);
+        view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.Others); //Sends the IncreasePlayer1Score to the other client
     }
     public void IncreasePlayer2Score()
     {
-        view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.Others);
+        view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.Others); //Sends the increase player 1 score to the other client
     }
 
 
     public void UpdateScore()
     {
-        Debug.Log(player2Score);
         scoreText.text = player1Score.ToString() +"    "+ "-" +"    "+player2Score.ToString();
     }
 }

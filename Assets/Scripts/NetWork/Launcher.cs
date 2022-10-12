@@ -41,19 +41,11 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         //PhotonNetwork.LoadLevel(1);
     }
 
-
     public override void OnJoinRandomFailed(short returnCode, string message) //If the player cant join to the room (No room existing or all the avaliables rooms are full, it will create an empty room)
     {
         Debug.Log("No room avaliable, creating one...");
         PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2});//Creating room with the specified byte of max players per room
     }
-
-    public void JoinRandomRoom()
-    {
-        PhotonNetwork.JoinRandomRoom(); //Joins a random room, no matter the name
-        launcherUI.ShowJoiningText("JOINING TO A ROOM...");
-    }
-
     public void SetRoomName(string name)
     {
         roomName = name;
