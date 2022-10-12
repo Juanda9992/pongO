@@ -7,9 +7,9 @@ using TMPro;
 using UnityEngine.UI;
 public class CustomRoomCreator : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI pointsText;
+    [SerializeField] private TextMeshProUGUI pointsText, errorText;
     [SerializeField] private Slider pointsSlider;
-    private ExitGames.Client.Photon.Hashtable matchMakingOptions = new ExitGames.Client.Photon.Hashtable();
+    private ExitGames.Client.Photon.Hashtable matchMakingOptions = new ExitGames.Client.Photon.Hashtable(); //Hashtable for matchmaking
     private string roomName;
     private float roomPoints = 3;
     private LauncherUI launcher;
@@ -21,29 +21,45 @@ public class CustomRoomCreator : MonoBehaviour
     }
     public void SetRoomName(string RoomName)
     {
-        roomName = RoomName.ToUpper();
-        
+        roomName = RoomName.ToUpper(); //Sets the name of the custom room
     }
-
-    public void UpdateRoomPoints()
+    public void UpdateRoomPoints() //Sets the points for the custom room
     {
         roomPoints = pointsSlider.value;
         matchMakingOptions["Points"] = roomPoints; 
-        pointsText.text = roomPoints.ToString();
+        pointsText.text = roomPoints.ToString(); //Updates text 
     }
 
     public void CreateRoom()
     {
-        if(roomName != null)
+        if(roomName != null) //If the room name is not empty
         {
-            PhotonNetwork.CreateRoom(roomName,new RoomOptions{MaxPlayers = 2, CustomRoomProperties = matchMakingOptions},TypedLobby.Default);
-            launcher.HideAllPanels(); //Hides all the panels
-            launcher.ShowJoiningText("CREATING ROOM... " + roomName); //Displays the text with the name of the room
+            if(roomName.Length == 5) //If it has 5 characters
+            {
+                matchMakingOptions["Private"] = true; //Sets the private parameter
+                PhotonNetwork.CreateRoom(roomName,new RoomOptions{MaxPlayers = 2, CustomRoomProperties = matchMakingOptions},TypedLobby.Default); //Creates the room and set the properties
+                GameObject.Find("CUSTOM ROOM PANEL").SetActive(false);
+                launcher.ShowJoiningText("CREATING ROOM... " + roomName); //Displays the text with the name of the room
+            }
+            else //If not, a error message will be displayed
+            {
+                errorText.gameObject.SetActive(true);
+                errorText.text = "The room name must have 5 characters";
+            }
         }
         else
-        {
-            Debug.LogWarning("THE ROOM NAME CANNOT BE EMPTY");
+        {       //If is empty, another error message will be displayed
+                errorText.gameObject.SetActive(true);
+                errorText.text = "The room name cannot be empty";
         }
+    }
+
+    public void JoinRandomRoom()
+    {
+        matchMakingOptions["Private"] = false; //Sets the private paramter as false
+        matchMakingOptions["Points"] = null; //No points will be filtered
+        PhotonNetwork.JoinRandomRoom(matchMakingOptions,2); //Joins a random room using the filter
+        launcher.ShowJoiningText("JOINING TO A ROOM...");
     }
 
 }

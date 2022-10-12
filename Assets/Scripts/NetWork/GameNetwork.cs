@@ -45,6 +45,9 @@ public class GameNetwork : MonoBehaviourPunCallbacks
     public void ExitMatch()
     {
         PhotonNetwork.LeaveRoom();
+    }
+    public override void OnLeftRoom()
+    {
         PhotonNetwork.Disconnect();
         Debug.Log(PhotonNetwork.InRoom);
         SceneManager.LoadScene(0);
