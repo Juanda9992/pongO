@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
-public class CustomRoomCreator : MonoBehaviour
+public class CustomRoomCreator : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TextMeshProUGUI pointsText, errorText;
     [SerializeField] private Slider pointsSlider;
@@ -23,6 +23,12 @@ public class CustomRoomCreator : MonoBehaviour
     {
         roomName = RoomName.ToUpper(); //Sets the name of the custom room
     }
+
+    public void ClearRoomName()
+    {
+        roomName = "";
+    }
+
     public void UpdateRoomPoints() //Sets the points for the custom room
     {
         roomPoints = pointsSlider.value;
@@ -57,9 +63,16 @@ public class CustomRoomCreator : MonoBehaviour
     public void JoinRandomRoom()
     {
         matchMakingOptions["Private"] = false; //Sets the private paramter as false
-        matchMakingOptions["Points"] = null; //No points will be filtered
+        matchMakingOptions["Points"] = 3; //Default points will be filtered
         PhotonNetwork.JoinRandomRoom(matchMakingOptions,2); //Joins a random room using the filter
         launcher.ShowJoiningText("JOINING TO A ROOM...");
+    }
+
+    
+    public override void OnJoinRandomFailed(short returnCode, string message) //If the player cant join to the room (No room existing or all the avaliables rooms are full, it will create an empty room)
+    {
+        Debug.Log("No room avaliable, creating one...");
+        PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2, CustomRoomProperties = matchMakingOptions});//Creating room with the specified byte of max players per room
     }
 
 }
