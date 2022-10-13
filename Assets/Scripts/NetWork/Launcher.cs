@@ -41,19 +41,21 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         //PhotonNetwork.LoadLevel(1);
     }
 
-    public override void OnJoinRandomFailed(short returnCode, string message) //If the player cant join to the room (No room existing or all the avaliables rooms are full, it will create an empty room)
-    {
-        Debug.Log("No room avaliable, creating one...");
-        PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2});//Creating room with the specified byte of max players per room
-    }
     public void SetRoomName(string name)
     {
         roomName = name;
     }
     public void JoinRoomWithName()
     {
-        PhotonNetwork.JoinRoom(roomName.ToUpper());
-        launcherUI.ShowJoiningText("JOINING TO " + roomName + "...");
+        if(roomName.Length == 5)
+        {
+            PhotonNetwork.JoinRoom(roomName.ToUpper());
+            launcherUI.ShowJoiningText("JOINING TO " + roomName + "...");
+        }
+        else
+        {
+            Debug.LogWarning("The room´s name must have 5 characters");
+        }
     }
 
     public void Disconnect()
@@ -63,7 +65,7 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
 
     public override void OnDisconnected(DisconnectCause cause) //When the player disconnects the server
     {
-        launcherUI.showMainPanel(); //The game will show the main menu
+        launcherUI.HidePanelsOnDisconect();
         launcherUI.UpdateLogText(cause.ToString()); //A log text will be shown on the bottom oh the screen
         Debug.LogFormat("Disconnetcted, the reason is {0}", cause);
     }
