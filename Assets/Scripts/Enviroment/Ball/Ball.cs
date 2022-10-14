@@ -8,6 +8,7 @@ public class Ball : MonoBehaviour
 {
     private Rigidbody2D rb;
     private PhotonView view;
+    private Match_State state;
     [SerializeField] private float minStartSpeed,maxStartSpeed;
     // Start is called before the first frame update
     private void Start()
@@ -15,6 +16,7 @@ public class Ball : MonoBehaviour
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody2D>();
         Invoke("AddSpeed",3); //Waits 3 seconds before adding speed to the ball
+        state = GameObject.FindObjectOfType<Match_State>();
     }
 
     private void AddSpeed()
@@ -34,9 +36,12 @@ public class Ball : MonoBehaviour
 
     private void StopBall()
     {//Resets the position of the ball and his velocity
-        transform.position = Vector2.zero;
-        rb.velocity = Vector2.zero;
-        Invoke("AddSpeed",3); //Then waits another 3 seconds before adding speed again
+        if(state.inGame)
+        {
+            transform.position = Vector2.zero;
+            rb.velocity = Vector2.zero;
+            Invoke("AddSpeed",3); //Then waits another 3 seconds before adding speed again
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)

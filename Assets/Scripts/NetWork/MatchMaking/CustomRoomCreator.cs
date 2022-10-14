@@ -73,4 +73,9 @@ public class CustomRoomCreator : MonoBehaviourPunCallbacks
         PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2, IsVisible = true});//Creating room with the specified byte of max players per room
     }
 
+    public void SetRoomPointsTroughtSlider(float Points)
+    {
+        Room_Stats.Stats_inst.matchPoints = Mathf.RoundToInt(Points);
+    }
+
 }
