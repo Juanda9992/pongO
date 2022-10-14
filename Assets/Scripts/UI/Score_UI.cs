@@ -10,10 +10,12 @@ public class Score_UI : MonoBehaviour
     private TextMeshProUGUI scoreText;
     private int player1Score = 0,player2Score = 0;
     private PhotonView view;
+    private Match_State state;
 
     void Start()
     {
         view = GetComponent<PhotonView>();
+        state = GameObject.FindObjectOfType<Match_State>();
         UpdateScore();
     }
     [PunRPC] //Remote Procedura Call
@@ -43,5 +45,13 @@ public class Score_UI : MonoBehaviour
     public void UpdateScore()
     {
         scoreText.text = player1Score.ToString() +"    "+ "-" +"    "+player2Score.ToString();
+        if(player1Score == Room_Stats.Stats_inst.matchPoints)
+        {
+            state.ChangeTextToWinner();
+        }
+        else if(player2Score == Room_Stats.Stats_inst.matchPoints)
+        {
+            state.ChangeTextToWinner(false);
+        }
     }
 }
