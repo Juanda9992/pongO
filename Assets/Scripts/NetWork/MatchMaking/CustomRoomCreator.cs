@@ -42,8 +42,7 @@ public class CustomRoomCreator : MonoBehaviourPunCallbacks
         {
             if(roomName.Length == 5) //If it has 5 characters
             {
-                matchMakingOptions["Private"] = true; //Sets the private parameter
-                PhotonNetwork.CreateRoom(roomName,new RoomOptions{MaxPlayers = 2, CustomRoomProperties = matchMakingOptions},TypedLobby.Default); //Creates the room and set the properties
+                PhotonNetwork.CreateRoom(roomName,new RoomOptions{MaxPlayers = 2, CustomRoomProperties = matchMakingOptions, IsVisible = false},TypedLobby.Default); //Creates the room and set the properties
                 GameObject.Find("CUSTOM ROOM PANEL").SetActive(false);
                 launcher.ShowJoiningText("CREATING ROOM... " + roomName); //Displays the text with the name of the room
             }
@@ -62,9 +61,8 @@ public class CustomRoomCreator : MonoBehaviourPunCallbacks
 
     public void JoinRandomRoom()
     {
-        matchMakingOptions["Private"] = false; //Sets the private paramter as false
         matchMakingOptions["Points"] = 3; //Default points will be filtered
-        PhotonNetwork.JoinRandomRoom(matchMakingOptions,2); //Joins a random room using the filter
+        PhotonNetwork.JoinRandomRoom(); //Joins a random room using the filter
         launcher.ShowJoiningText("JOINING TO A ROOM...");
     }
 
@@ -72,7 +70,7 @@ public class CustomRoomCreator : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message) //If the player cant join to the room (No room existing or all the avaliables rooms are full, it will create an empty room)
     {
         Debug.Log("No room avaliable, creating one...");
-        PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2, CustomRoomProperties = matchMakingOptions});//Creating room with the specified byte of max players per room
+        PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2, IsVisible = true});//Creating room with the specified byte of max players per room
     }
 
 }
