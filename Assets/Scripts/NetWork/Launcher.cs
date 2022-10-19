@@ -82,6 +82,7 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         {
             if(PhotonNetwork.IsMasterClient)
             {
+                Room_Stats.Stats_inst.UpdateMatchPointsViaRPC();
                 PhotonNetwork.LoadLevel(1);
             }
         }
