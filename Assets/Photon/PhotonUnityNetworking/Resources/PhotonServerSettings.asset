@@ -43,6 +43,7 @@ MonoBehaviour:
   - Fire
   - IncreasePlayer1ScoreRPC
   - IncreasePlayer2ScoreRPC
+  - UpdatePoints
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
