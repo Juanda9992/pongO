@@ -7,6 +7,11 @@ public class Match_State : MonoBehaviour
 {
     public bool inGame = true;
     [SerializeField] private TextMeshProUGUI endMatchText;
+
+    void Start()
+    {
+        Debug.Log(PhotonNetwork.CurrentRoom.CustomProperties["Points"]);
+    }
     public void ShowEndMatchText()
     {
         endMatchText.gameObject.SetActive(true);

@@ -21,15 +21,4 @@ public class Room_Stats : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-
-    public void UpdateMatchPointsViaRPC()
-    {
-        view.RPC("UpdatePoints",RpcTarget.OthersBuffered,this.matchPoints);
-    }
-    [PunRPC]
-    private void UpdatePoints(int DesiredPoints)
-    {
-        this.matchPoints = DesiredPoints; 
-    }
-
 }
