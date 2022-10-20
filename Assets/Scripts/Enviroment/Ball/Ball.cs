@@ -9,6 +9,7 @@ public class Ball : MonoBehaviour, IPunObservable
     private Rigidbody2D rb;
     private PhotonView view;
     private Match_State state;
+    private Vector2 networkPosition;
     [SerializeField] private float minStartSpeed,maxStartSpeed;
     // Start is called before the first frame update
     private void Start()
@@ -21,17 +22,22 @@ public class Ball : MonoBehaviour, IPunObservable
 
     private void AddSpeed()
     {
-        rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed) * Mathf.RoundToInt(Random.Range(-1,1)),Random.Range(minStartSpeed /2,maxStartSpeed/2) * Mathf.RoundToInt(Random.Range(-1,1))); //Adds a random speed to the ball
+        if(PhotonNetwork.IsMasterClient)
+        {
+            rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed) * Mathf.RoundToInt(Random.Range(-1,1)),Random.Range(minStartSpeed /2,maxStartSpeed/2) * Mathf.RoundToInt(Random.Range(-1,1))); //Adds a random speed to the ball
 
-        //If the velocity x or y of the ball is equal to zero, it will changed to 6
-        if(rb.velocity.x == 0)
-        {
-            rb.velocity = new Vector2(6,rb.velocity.y); 
+            //If the velocity x or y of the ball is equal to zero, it will changed to 6
+            if(rb.velocity.x == 0)
+            {
+                rb.velocity = new Vector2(6,rb.velocity.y); 
+            }
+            else if(rb.velocity.y == 0)
+            {
+                rb.velocity = new Vector2(rb.velocity.x,6);
+            }
         }
-        else if(rb.velocity.y == 0)
-        {
-            rb.velocity = new Vector2(rb.velocity.x,6);
-        }
+
+
     }
 
     private void StopBall()
@@ -69,10 +75,18 @@ public class Ball : MonoBehaviour, IPunObservable
         else if(stream.IsReading)
         {
             float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.SentServerTime));
-            rb.position = (Vector3)stream.ReceiveNext();
-            rb.velocity = (Vector3)stream.ReceiveNext();
+            networkPosition = (Vector3)stream.ReceiveNext();
+            rb.velocity = (Vector2)stream.ReceiveNext();
 
-            rb.position += rb.velocity * lag;
+            networkPosition += (this.rb.velocity * lag);
+        }
+    }
+
+    void FixedUpdate()
+    {
+        if(!view.IsMine)
+        {
+            rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime);
         }
     }
 }
