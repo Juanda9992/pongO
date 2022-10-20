@@ -48,6 +48,10 @@ public class Ball : MonoBehaviour, IPunObservable
             rb.velocity = Vector2.zero;
             Invoke("AddSpeed",3); //Then waits another 3 seconds before adding speed again
         }
+        else
+        {
+            StopCoroutine("Addspeed");
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -88,5 +92,15 @@ public class Ball : MonoBehaviour, IPunObservable
         {
             rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime);
         }
+    }
+
+    private void OnEnable()
+    {
+        state.OnRestartMatch += StopBall;
+    }
+
+    private void OnDisable()
+    {
+        state.OnRestartMatch -= StopBall;
     }
 }

@@ -54,4 +54,22 @@ public class Score_UI : MonoBehaviour
             state.ChangeTextToWinner(false);
         }
     }
+
+    private void ResetValues()
+    {
+        player1Score = 0;
+        player2Score = 0;
+        UpdateScore();
+    }
+
+    private void OnEnable()
+    {
+        state.OnRestartMatch += ResetValues;
+    }
+
+    private void OnDisable()
+    {
+        state.OnRestartMatch -= ResetValues;
+    }
+
 }
