@@ -10,6 +10,7 @@ public class GameNetwork : MonoBehaviourPunCallbacks
     public static GameNetwork gameNetworkInstance;
     public Player_Control player1, player2;
     public GameObject playerPrefab; //Paddle to instantiate
+    private Rematcher rematcher;
     private void Awake()
     {
         if(gameNetworkInstance == null)
@@ -32,14 +33,23 @@ public class GameNetwork : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(1);
         if(PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Instantiate("RematcherPrefab",Vector3.zero,Quaternion.identity);
+            
             PhotonNetwork.Instantiate(playerPrefab.name,new Vector3(-7,0,0),Quaternion.identity);//If the user is the master client, the game will instantiate a paddle in the left side  
+            InstantiateRematcher();
         }
         else
         {
             PhotonNetwork.Instantiate(playerPrefab.name,new Vector3(7,0,0),Quaternion.identity); //If the player is not the master client, it will instantiate a paddle on the right side
         }
+
+        yield return new WaitForSeconds(1);
         
+    }
+
+    private void InstantiateRematcher()
+    {
+        GameObject rematcherObj = PhotonNetwork.Instantiate("RematcherPrefab",Vector3.zero,Quaternion.identity);
+        rematcher = rematcherObj.GetComponent<Rematcher>();
     }
 
     //Allows the player to leave the match, then it proceeds to load the main menu scene;
@@ -52,5 +62,10 @@ public class GameNetwork : MonoBehaviourPunCallbacks
         PhotonNetwork.Disconnect();
         Debug.Log(PhotonNetwork.InRoom);
         SceneManager.LoadScene(0);
+    }
+
+    public void IncreaseRematchVotesThroughtButton()
+    {
+        rematcher.IncreaseVotes();
     }
 }
