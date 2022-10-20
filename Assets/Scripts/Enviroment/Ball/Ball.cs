@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 
 [RequireComponent(typeof(Rigidbody2D))] //Required Component
-public class Ball : MonoBehaviour
+public class Ball : MonoBehaviour, IPunObservable
 {
     private Rigidbody2D rb;
     private PhotonView view;
@@ -56,6 +56,23 @@ public class Ball : MonoBehaviour
             //If the ball scores on the right side, it will call and RPC that increases the player 1 Score
             GameObject.FindObjectOfType<Score_UI>().IncreasePlayer1Score();
             StopBall();
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) 
+    {
+        if(stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+            stream.SendNext(rb.velocity);
+        }
+        else if(stream.IsReading)
+        {
+            float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.SentServerTime));
+            rb.position = (Vector3)stream.ReceiveNext();
+            rb.velocity = (Vector3)stream.ReceiveNext();
+
+            rb.position += rb.velocity * lag;
         }
     }
 }
