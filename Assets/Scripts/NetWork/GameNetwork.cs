@@ -32,6 +32,7 @@ public class GameNetwork : MonoBehaviourPunCallbacks
         yield return new WaitForSeconds(1);
         if(PhotonNetwork.IsMasterClient)
         {
+            PhotonNetwork.Instantiate("RematcherPrefab",Vector3.zero,Quaternion.identity);
             PhotonNetwork.Instantiate(playerPrefab.name,new Vector3(-7,0,0),Quaternion.identity);//If the user is the master client, the game will instantiate a paddle in the left side  
         }
         else

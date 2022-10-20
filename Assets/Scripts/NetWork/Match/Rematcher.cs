@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 public class Rematcher : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Rematcher : MonoBehaviour
     void Start()
     {
         state = GameObject.FindObjectOfType<Match_State>();
+        retryButtonText = GameObject.Find("RetryText").GetComponent<TextMeshProUGUI>();
         UpdateText();
     }
 
@@ -31,6 +33,7 @@ public class Rematcher : MonoBehaviour
     {
         retryButtonText.text = "RETRY? " + currentVotes + " / " + requiredVotes; 
     }
+
 
     void Update()
     {

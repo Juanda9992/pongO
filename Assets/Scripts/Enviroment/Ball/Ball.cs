@@ -71,18 +71,18 @@ public class Ball : MonoBehaviour, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) 
     {
-        if(stream.IsWriting)
+        if(stream.IsWriting) //If we are the master client, we are sending data
         {
-            stream.SendNext(transform.position);
-            stream.SendNext(rb.velocity);
+            stream.SendNext(transform.position); //Send the position of the ball
+            stream.SendNext(rb.velocity); //Send the velocity of the ball
         }
-        else if(stream.IsReading)
+        else if(stream.IsReading) //If we are not the master client, we will read the data sended by the master client
         {
-            float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.SentServerTime));
-            networkPosition = (Vector3)stream.ReceiveNext();
-            rb.velocity = (Vector2)stream.ReceiveNext();
+            float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.SentServerTime)); //Calculate the lag
+            networkPosition = (Vector3)stream.ReceiveNext(); //The Vector2 Network Position will receive the position sent by the master client
+            rb.velocity = (Vector2)stream.ReceiveNext(); //The velocity of the rigidbody will be the velocity sended by the master client
 
-            networkPosition += (this.rb.velocity * lag);
+            networkPosition += (this.rb.velocity * lag); //Increases the value of the speed to the network position and multiplies it by the lag value
         }
     }
 
@@ -90,7 +90,7 @@ public class Ball : MonoBehaviour, IPunObservable
     {
         if(!view.IsMine)
         {
-            rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime);
+            rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
         }
     }
 
