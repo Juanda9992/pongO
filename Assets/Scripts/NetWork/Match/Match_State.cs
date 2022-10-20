@@ -10,12 +10,15 @@ public class Match_State : MonoBehaviour
     [SerializeField] private TextMeshProUGUI endMatchText;
 
     [SerializeField] private GameObject endMatchPanel;
+    private Rematcher rematcher;
 
     public delegate void onRestartMatch();
     public event onRestartMatch OnRestartMatch; 
     public void ShowEndMatchPanel()
     {
+        rematcher = GameObject.FindObjectOfType<Rematcher>();
         endMatchPanel.SetActive(true);
+        rematcher.FindDependences();
     }
 
     public void ChangeTextToWinner(bool Player1Wins = true)

@@ -14,10 +14,13 @@ public class Rematcher : MonoBehaviour
     void Start()
     {
         state = GameObject.FindObjectOfType<Match_State>();
-        retryButtonText = GameObject.Find("RetryText").GetComponent<TextMeshProUGUI>();
         UpdateText();
     }
-
+    
+    public void FindDependences()
+    {
+        retryButtonText = GameObject.Find("RetryText").GetComponent<TextMeshProUGUI>();
+    }
     public void IncreaseVotes()
     {
         currentVotes++;
@@ -32,14 +35,5 @@ public class Rematcher : MonoBehaviour
     private void UpdateText()
     {
         retryButtonText.text = "RETRY? " + currentVotes + " / " + requiredVotes; 
-    }
-
-
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.N))
-        {
-            state.ResetMatch();
-        }
     }
 }
