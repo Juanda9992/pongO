@@ -12,7 +12,7 @@ public class Score_UI : MonoBehaviour
     private PhotonView view;
     private Match_State state;
 
-    void Start()
+    void Awake()
     {
         view = GetComponent<PhotonView>();
         state = GameObject.FindObjectOfType<Match_State>();
@@ -34,29 +34,39 @@ public class Score_UI : MonoBehaviour
 
     public void IncreasePlayer1Score()
     {
-        view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.Others); //Sends the IncreasePlayer1Score to the other client
+        if(state.inGame)
+        {
+            view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.Others); //Sends the IncreasePlayer1Score to the other client      
+        }
     }
     public void IncreasePlayer2Score()
     {
-        view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.Others); //Sends the increase player 1 score to the other client
+        if(state.inGame)
+        {    
+            view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.Others); //Sends the increase player 1 score to the other client
+        }
     }
 
 
     public void UpdateScore()
     {
         scoreText.text = player1Score.ToString() +"    "+ "-" +"    "+player2Score.ToString();
-        if(player1Score == Room_Stats.Stats_inst.matchPoints)
+        if(state.inGame)
         {
-            state.ChangeTextToWinner();
-        }
-        else if(player2Score == Room_Stats.Stats_inst.matchPoints)
-        {
-            state.ChangeTextToWinner(false);
+            if(player1Score == Room_Stats.Stats_inst.matchPoints)
+            {
+                state.ChangeTextToWinner();
+            }
+            else if(player2Score == Room_Stats.Stats_inst.matchPoints)
+            {
+                state.ChangeTextToWinner(false);
+            }
         }
     }
 
     private void ResetValues()
     {
+        Debug.Log(state.inGame);
         player1Score = 0;
         player2Score = 0;
         UpdateScore();

@@ -12,11 +12,11 @@ public class Ball : MonoBehaviour, IPunObservable
     private Vector2 networkPosition;
     [SerializeField] private float minStartSpeed,maxStartSpeed;
     // Start is called before the first frame update
-    private void Start()
+    private void Awake()
     {
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody2D>();
-        Invoke("AddSpeed",3); //Waits 3 seconds before adding speed to the ball
+        Invoke("AddSpeed",4); //Waits 3 seconds before adding speed to the ball
         state = GameObject.FindObjectOfType<Match_State>();
     }
 
@@ -47,10 +47,6 @@ public class Ball : MonoBehaviour, IPunObservable
             transform.position = Vector2.zero;
             rb.velocity = Vector2.zero;
             Invoke("AddSpeed",3); //Then waits another 3 seconds before adding speed again
-        }
-        else
-        {
-            StopCoroutine("Addspeed");
         }
     }
 
