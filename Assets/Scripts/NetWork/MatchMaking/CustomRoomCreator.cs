@@ -74,10 +74,17 @@ public class CustomRoomCreator : MonoBehaviourPunCallbacks
     }
 
     public override void OnJoinedRoom()
-    {   int DesiredPoints = System.Convert.ToInt32(PhotonNetwork.CurrentRoom.CustomProperties["Points"]);
-        Debug.Log(DesiredPoints);
-
-        Room_Stats.Stats_inst.matchPoints = DesiredPoints;
+    {   
+        if(PhotonNetwork.CurrentRoom.IsVisible) //If the room is visible, it means that is joined randomly, so the game will play random points 
+        {
+            Room_Stats.Stats_inst.matchPoints = Random.Range(3,10);
+        }
+        else //If the room is not visible, it means that the room is private, so the room will use the points that the host set
+        {
+            int DesiredPoints = System.Convert.ToInt32(PhotonNetwork.CurrentRoom.CustomProperties["Points"]);
+            Debug.Log(DesiredPoints);
+            Room_Stats.Stats_inst.matchPoints = DesiredPoints;
+        }
     }
 
 }
