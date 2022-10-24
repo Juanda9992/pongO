@@ -16,9 +16,7 @@ public class Match_State : MonoBehaviour
     public event onRestartMatch OnRestartMatch; 
     public void ShowEndMatchPanel()
     {
-        rematcher = GameObject.FindObjectOfType<Rematcher>();
         endMatchPanel.SetActive(true);
-        rematcher.FindDependences();
     }
 
     public void ChangeTextToWinner(bool Player1Wins = true)
