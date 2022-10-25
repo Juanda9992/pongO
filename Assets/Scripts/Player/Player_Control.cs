@@ -7,7 +7,7 @@ public class Player_Control : MonoBehaviour
 {
     private Rigidbody2D rb;
     [SerializeField] private float minY,maxY;
-    [SerializeField] private float speed = 10;
+    public float speed = 10;
     // Start is called before the first frame update
     void Awake()
     {
