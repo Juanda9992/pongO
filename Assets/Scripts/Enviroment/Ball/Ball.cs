@@ -10,6 +10,7 @@ public class Ball : MonoBehaviour, IPunObservable
     private PhotonView view;
     private Match_State state;
     private Vector2 networkPosition;
+    private CircleCollider2D ballCollider;
     [SerializeField] private float minStartSpeed,maxStartSpeed;
     // Start is called before the first frame update
     private void Awake()
@@ -18,10 +19,12 @@ public class Ball : MonoBehaviour, IPunObservable
         rb = GetComponent<Rigidbody2D>();
         Invoke("AddSpeed",4); //Waits 3 seconds before adding speed to the ball
         state = GameObject.FindObjectOfType<Match_State>();
+        ballCollider = GetComponent<CircleCollider2D>();
     }
 
     private void AddSpeed()
     {
+        ballCollider.enabled = true;
         if(PhotonNetwork.IsMasterClient)
         {
             rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed) * Mathf.RoundToInt(Random.Range(-1,1)),Random.Range(minStartSpeed /2,maxStartSpeed/2) * Mathf.RoundToInt(Random.Range(-1,1))); //Adds a random speed to the ball
@@ -40,8 +43,10 @@ public class Ball : MonoBehaviour, IPunObservable
 
     }
 
+        //Resets the position of the ball and his velocity
     private void StopBall()
-    {//Resets the position of the ball and his velocity
+    {
+        ballCollider.enabled = false;
         if(state.inGame)
         {
             transform.position = Vector2.zero;

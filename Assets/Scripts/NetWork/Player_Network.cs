@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Player_Network : MonoBehaviour
+public class Player_Network : MonoBehaviour, IPunObservable
 {
     private Player_Control myPlayer; //The paddle to control
 
     private PhotonView view;
+
+    private Vector2 oldPosition, movement;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +29,14 @@ public class Player_Network : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(!view.IsMine)
+        {
+            transform.position = Vector2.MoveTowards(transform.position,movement,Time.deltaTime * myPlayer.speed);
+        }
+    }
+
     public void MovePlayerUp()
     {
         myPlayer.moveUp(); //Move the paddle up
@@ -43,5 +53,21 @@ public class Player_Network : MonoBehaviour
     public Player_Control GetLocalPlayer()
     {
         return myPlayer; //Returns the player the user is controlling
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if(stream.IsWriting) //If we are the master client, we are sending data
+        {
+            oldPosition = myPlayer.transform.position;
+            movement = (Vector2)transform.position - (Vector2)oldPosition;
+            
+            stream.SendNext(movement); //Send the position of the ball
+        }
+        else if(stream.IsReading) //If we are not the master client, we will read the data sended by the master client
+        {
+            float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.SentServerTime)); //Calculate the lag
+            movement = (Vector2)stream.ReceiveNext();
+        }
     }
 }
