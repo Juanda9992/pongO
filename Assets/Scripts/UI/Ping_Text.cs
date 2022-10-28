@@ -11,6 +11,7 @@ public class Ping_Text : MonoBehaviour
     void Update()
     {
         ping = PhotonNetwork.GetPing(); //The ping between the client and the server
+        pingText.text = ping.ToString();
 
         if(ping < 100)
         {

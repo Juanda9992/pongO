@@ -44,6 +44,7 @@ public class Ball : MonoBehaviour, IPunObservable
     }
 
         //Resets the position of the ball and his velocity
+    [PunRPC]
     private void StopBall()
     {
         ballCollider.enabled = false;
@@ -51,8 +52,16 @@ public class Ball : MonoBehaviour, IPunObservable
         {
             transform.position = Vector2.zero;
             rb.velocity = Vector2.zero;
-            Invoke("AddSpeed",3); //Then waits another 3 seconds before adding speed again
+            if(PhotonNetwork.IsMasterClient)
+            {
+                Invoke("AddSpeed",3); //Then waits another 3 seconds before adding speed again
+            }
         }
+    }
+
+    private void StopBallRPC()
+    {
+        view.RPC("StopBall",RpcTarget.All);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -60,13 +69,13 @@ public class Ball : MonoBehaviour, IPunObservable
         if(other.CompareTag("Left"))
         {
             GameObject.FindObjectOfType<Score_UI>().IncreasePlayer2Score(); //If the ball scores on the left side, it will call and RPC that increases the player 2 Score
-            StopBall();
+            StopBallRPC();
         }
         else if(other.CompareTag("Right"))
         {
             //If the ball scores on the right side, it will call and RPC that increases the player 1 Score
             GameObject.FindObjectOfType<Score_UI>().IncreasePlayer1Score();
-            StopBall();
+            StopBallRPC();
         }
     }
 
@@ -97,11 +106,11 @@ public class Ball : MonoBehaviour, IPunObservable
 
     private void OnEnable()
     {
-        state.OnRestartMatch += StopBall;
+        state.OnRestartMatch += StopBallRPC;
     }
 
     private void OnDisable()
     {
-        state.OnRestartMatch -= StopBall;
+        state.OnRestartMatch -= StopBallRPC;
     }
 }
