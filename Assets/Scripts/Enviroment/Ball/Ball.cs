@@ -66,16 +66,19 @@ public class Ball : MonoBehaviour, IPunObservable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.CompareTag("Left"))
+        if(view.IsMine)
         {
-            GameObject.FindObjectOfType<Score_UI>().IncreasePlayer2Score(); //If the ball scores on the left side, it will call and RPC that increases the player 2 Score
-            StopBallRPC();
-        }
-        else if(other.CompareTag("Right"))
-        {
-            //If the ball scores on the right side, it will call and RPC that increases the player 1 Score
-            GameObject.FindObjectOfType<Score_UI>().IncreasePlayer1Score();
-            StopBallRPC();
+            if(other.CompareTag("Left"))
+            {
+                GameObject.FindObjectOfType<Score_UI>().IncreasePlayer2Score(); //If the ball scores on the left side, it will call and RPC that increases the player 2 Score
+                StopBallRPC();
+            }
+            else if(other.CompareTag("Right"))
+            {
+                //If the ball scores on the right side, it will call and RPC that increases the player 1 Score
+                GameObject.FindObjectOfType<Score_UI>().IncreasePlayer1Score();
+                StopBallRPC();
+            }
         }
     }
 

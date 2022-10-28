@@ -33,7 +33,8 @@ public class Player_Network : MonoBehaviour, IPunObservable
     {
         if(!view.IsMine)
         {
-            transform.position = Vector2.MoveTowards(transform.position,movement,Time.deltaTime * myPlayer.speed);
+            Debug.LogWarningFormat("{0} view, {1} position, {2} movement, {3} my player ",view,transform.position,movement,myPlayer);
+            transform.position = Vector2.MoveTowards(this.transform.position,movement,Time.deltaTime * this.myPlayer.speed);
         }
     }
 
