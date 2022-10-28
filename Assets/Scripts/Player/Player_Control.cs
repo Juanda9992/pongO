@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Player_Control : MonoBehaviour
+public class Player_Control : MonoBehaviour, IPunObservable
 {
     private Rigidbody2D rb;
     [SerializeField] private float minY,maxY;
+    private Vector2 networkPosition;
     public float speed = 10;
+    private PhotonView view;
     // Start is called before the first frame update
     void Awake()
     {
@@ -23,6 +25,7 @@ public class Player_Control : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        view = GetComponent<PhotonView>();
     }
 
     public void moveUp()
@@ -49,6 +52,31 @@ public class Player_Control : MonoBehaviour
     void Update()
     {
         transform.position = new Vector2(transform.position.x,Mathf.Clamp(transform.position.y,minY,maxY)); //Clamps the position of the player to not move outside the map
+    }
+
+    private void FixedUpdate() 
+    {
+        if(!view.IsMine)
+        {
+            rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
+        }
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) 
+    {
+        if(stream.IsWriting) //If we are the master client, we are sending data
+        {
+            stream.SendNext(transform.position); //Send the position of the ball
+            stream.SendNext(rb.velocity); //Send the velocity of the ball
+        }
+        else if(stream.IsReading) //If we are not the master client, we will read the data sended by the master client
+        {
+            float lag = Mathf.Abs((float) (PhotonNetwork.Time - info.SentServerTime)); //Calculate the lag
+            networkPosition = (Vector3)stream.ReceiveNext(); //The Vector2 Network Position will receive the position sent by the master client
+            rb.velocity = (Vector2)stream.ReceiveNext(); //The velocity of the rigidbody will be the velocity sended by the master client
+
+            networkPosition += (this.rb.velocity * lag); //Increases the value of the speed to the network position and multiplies it by the lag value
+        }
     }
 
 }
