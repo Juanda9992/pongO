@@ -72,7 +72,7 @@ public class LauncherUI : MonoBehaviourPunCallbacks
     {
         if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
-            if(PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.IsVisible)
+            if(PhotonNetwork.CurrentRoom.IsVisible)
             {
                 StartCoroutine("StartRandomMatch");
             }
