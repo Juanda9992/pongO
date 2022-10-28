@@ -2782,6 +2782,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   retryButtonText: {fileID: 1330011990}
+  rematchButton: {fileID: 63281577}
 --- !u!1 &8100408383435721201
 GameObject:
   m_ObjectHideFlags: 0

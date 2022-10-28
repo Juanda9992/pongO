@@ -32,14 +32,6 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         PhotonNetwork.JoinLobby(); //When the player connects to the server it automatically will join to a lobby
         launcherUI.showRoomPanel(); //Shows Room Menu
     }
-    public override void OnJoinedRoom()
-    {
-        //When the players enter to a room the console will display all the room´s info
-        launcherUI.inRoom = true;
-        Debug.Log(PhotonNetwork.InRoom);
-        Debug.Log(PhotonNetwork.CurrentLobby + " " + PhotonNetwork.CurrentRoom);
-        //PhotonNetwork.LoadLevel(1);
-    }
 
     public void SetRoomName(string name)
     {
@@ -70,17 +62,11 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         Debug.LogFormat("Disconnetcted, the reason is {0}", cause);
     }
 
-    public override void OnLeftRoom()
-    {
-        launcherUI.inRoom = false; //The player is no longer in a room
-    }
-
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Debug.Log(newPlayer.NickName);
         if(PhotonNetwork.CurrentRoom.PlayerCount == maxPlayersPerRoom)
         {
-            if(PhotonNetwork.IsMasterClient)
+            if(PhotonNetwork.IsMasterClient && !PhotonNetwork.CurrentRoom.IsVisible)
             {
                 PhotonNetwork.LoadLevel(1);
             }

@@ -4,12 +4,14 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UnityEngine.UI;
 public class Rematcher : MonoBehaviour
 {
     private int requiredVotes = 2;
     private int currentVotes = 0;
     [SerializeField] private TextMeshProUGUI retryButtonText;
-    PhotonView view;
+    [SerializeField] private Button rematchButton;
+    private PhotonView view;
     private Match_State state;
 
     void Start()
@@ -28,6 +30,8 @@ public class Rematcher : MonoBehaviour
         {
             state.ResetMatch();
             currentVotes = 0;
+            UpdateText();
+            rematchButton.interactable = true;
         }
     }
 

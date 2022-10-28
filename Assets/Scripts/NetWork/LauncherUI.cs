@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Photon.Pun;
+using Photon.Realtime;
 
-public class LauncherUI : MonoBehaviour
+public class LauncherUI : MonoBehaviourPunCallbacks
 {
     [Header("Panels")]
     [SerializeField] private GameObject RoomPanel,MenuPanel, CustomRoomPanel; //Panels to activate and deactivate
     [Header("Texts")]
-    [SerializeField] private TextMeshProUGUI pingText,conectedToRegionText, conectingText,logText; //All the text
-
-    public bool inRoom; //The player is in a room?
+    [SerializeField] private TextMeshProUGUI conectedToRegionText, conectingText,logText; //All the text
 
     public void showRoomPanel()
     {
@@ -35,7 +34,7 @@ public class LauncherUI : MonoBehaviour
     {
         if(externalReason)
         {
-        logText.text = "Disconnected from the server by " + error; //shows the log text at the botton of the screen
+            logText.text = "Disconnected from the server by " + error; //shows the log text at the botton of the screen
         }
         else
         {
@@ -44,14 +43,9 @@ public class LauncherUI : MonoBehaviour
         logText.gameObject.SetActive(true);
     }
 
-    void Update()
+    public override void OnJoinedRoom()
     {
-        pingText.text = PhotonNetwork.GetPing().ToString(); //Displays the ping of the user on the right corner of the screen
-        if(inRoom)
-        {
-            //If the player is in a room, the text will show a message with the number of players in the room
-            conectingText.text = "WAITING FOR PLAYERS" + "\n" +PhotonNetwork.CurrentRoom.PlayerCount + " / 2";
-        }
+        conectingText.text = "WAITING FOR PLAYERS" + "\n" +PhotonNetwork.CurrentRoom.PlayerCount + " / 2";
     }
     public IEnumerator OnRoomNotFound()
     {
@@ -72,7 +66,29 @@ public class LauncherUI : MonoBehaviour
         RoomPanel.SetActive(false);
         CustomRoomPanel.SetActive(false);
         MenuPanel.SetActive(true);
+    }
 
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            if(PhotonNetwork.IsMasterClient && PhotonNetwork.CurrentRoom.IsVisible)
+            {
+                StartCoroutine("StartRandomMatch");
+            }
+        }
+
+    }
+
+    public IEnumerator StartRandomMatch()
+    {
+        yield return new WaitForSeconds(1);
+        conectingText.text = "THE MATCH WILL BE " + Room_Stats.Stats_inst.matchPoints + "POINTS";
+        yield return new WaitForSeconds(3);
+        if(PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.LoadLevel(1);
+        }
     }
 
 
