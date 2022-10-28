@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class Player_Network : MonoBehaviour
+public class Player_Network : MonoBehaviour, IPunObservable
 {
     private Player_Control myPlayer; //The paddle to control
 
@@ -45,6 +45,11 @@ public class Player_Network : MonoBehaviour
     public Player_Control GetLocalPlayer()
     {
         return myPlayer; //Returns the player the user is controlling
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) 
+    {
+        return;
     }
 
 }
