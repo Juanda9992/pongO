@@ -62,7 +62,7 @@ public class CustomRoomCreator : MonoBehaviourPunCallbacks
     public void JoinRandomRoom()
     {
         matchMakingOptions["Points"] = 3; //Default points will be filtered
-        PhotonNetwork.JoinRandomRoom(); //Joins a random room using the filter
+        PhotonNetwork.JoinRandomRoom(null,2); //Joins a random room using the filter
         launcher.ShowJoiningText("JOINING TO A ROOM...");
     }
 
@@ -70,21 +70,15 @@ public class CustomRoomCreator : MonoBehaviourPunCallbacks
     public override void OnJoinRandomFailed(short returnCode, string message) //If the player cant join to the room (No room existing or all the avaliables rooms are full, it will create an empty room)
     {
         Debug.Log("No room avaliable, creating one...");
-        PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2, IsVisible = true});//Creating room with the specified byte of max players per room
+        matchMakingOptions["Points"] = Random.Range(3,10);
+        PhotonNetwork.CreateRoom(null, new RoomOptions{MaxPlayers = 2, IsVisible = true, CustomRoomProperties = matchMakingOptions});//Creating room with the specified byte of max players per room
     }
 
     public override void OnJoinedRoom()
     {   
-        if(PhotonNetwork.CurrentRoom.IsVisible) //If the room is visible, it means that is joined randomly, so the game will play random points 
-        {
-            Room_Stats.Stats_inst.matchPoints = Random.Range(3,10);
-        }
-        else //If the room is not visible, it means that the room is private, so the room will use the points that the host set
-        {
             int DesiredPoints = System.Convert.ToInt32(PhotonNetwork.CurrentRoom.CustomProperties["Points"]);
             Debug.Log(DesiredPoints);
             Room_Stats.Stats_inst.matchPoints = DesiredPoints;
-        }
     }
 
 }
