@@ -4,7 +4,9 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using System;
-public class Match_State : MonoBehaviour
+using Photon.Realtime;
+
+public class Match_State : MonoBehaviourPunCallbacks
 {
     public bool inGame = true;
     [SerializeField] private TextMeshProUGUI endMatchText;
@@ -38,5 +40,10 @@ public class Match_State : MonoBehaviour
         endMatchPanel.SetActive(false);
         inGame = true;
         OnRestartMatch?.Invoke();
+    }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        inGame = false;
     }
 }
