@@ -46,6 +46,7 @@ public class LauncherUI : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         conectingText.text = "WAITING FOR PLAYERS" + "\n" +PhotonNetwork.CurrentRoom.PlayerCount + " / 2";
+        CheckForPlayersAndUpdateText();
     }
     public IEnumerator OnRoomNotFound()
     {
@@ -70,6 +71,11 @@ public class LauncherUI : MonoBehaviourPunCallbacks
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
+        CheckForPlayersAndUpdateText();
+    }
+
+    public void CheckForPlayersAndUpdateText()
+    {
         if(PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             if(PhotonNetwork.CurrentRoom.IsVisible)
@@ -77,7 +83,6 @@ public class LauncherUI : MonoBehaviourPunCallbacks
                 StartCoroutine("StartRandomMatch");
             }
         }
-
     }
 
     public IEnumerator StartRandomMatch()

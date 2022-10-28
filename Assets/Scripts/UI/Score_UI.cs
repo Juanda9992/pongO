@@ -36,14 +36,14 @@ public class Score_UI : MonoBehaviour
     {
         if(state.inGame)
         {
-            view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.Others); //Sends the IncreasePlayer1Score to the other client      
+            view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.All); //Sends the IncreasePlayer1Score to the other client      
         }
     }
     public void IncreasePlayer2Score()
     {
         if(state.inGame)
         {    
-            view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.Others); //Sends the increase player 1 score to the other client
+            view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.All); //Sends the increase player 1 score to the other client
         }
     }
 
