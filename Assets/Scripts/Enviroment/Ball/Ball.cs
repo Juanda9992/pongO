@@ -10,7 +10,6 @@ public class Ball : MonoBehaviour, IPunObservable
     private PhotonView view;
     private Match_State state;
     private Vector2 networkPosition;
-    private CircleCollider2D ballCollider;
     private LoadingBar bar;
     [SerializeField] private float minStartSpeed,maxStartSpeed;
     // Start is called before the first frame update
@@ -20,25 +19,23 @@ public class Ball : MonoBehaviour, IPunObservable
         rb = GetComponent<Rigidbody2D>();
         state = GameObject.FindObjectOfType<Match_State>();
         bar = GameObject.FindObjectOfType<LoadingBar>();
-        ballCollider = GetComponent<CircleCollider2D>();
         Invoke("AddSpeed",3); //Waits 3 seconds before adding speed to the ball
 
     }
 
     private void AddSpeed()
     {
-        ballCollider.enabled = true;
         if(PhotonNetwork.IsMasterClient)
         {
-            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(6,8);
+            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(5,8);
             if(rb.velocity.x is > -2 and < 2)
             {
-                rb.velocity = new Vector2(6,rb.velocity.y);
+                rb.velocity = new Vector2(5,rb.velocity.y);
             }
 
             if(rb.velocity.y is > -2 and < 2)
             {
-                rb.velocity = new Vector2(rb.velocity.x,-6);
+                rb.velocity = new Vector2(rb.velocity.x,-5);
             }
         }
     }
@@ -47,7 +44,6 @@ public class Ball : MonoBehaviour, IPunObservable
     [PunRPC]
     private void StopBall()
     {
-        ballCollider.enabled = false;
         bar.ShrinkBar(3);
         if(state.inGame)
         {
