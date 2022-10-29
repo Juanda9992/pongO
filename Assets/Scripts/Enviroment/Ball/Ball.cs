@@ -20,6 +20,7 @@ public class Ball : MonoBehaviour, IPunObservable
         Invoke("AddSpeed",4); //Waits 3 seconds before adding speed to the ball
         state = GameObject.FindObjectOfType<Match_State>();
         ballCollider = GetComponent<CircleCollider2D>();
+
     }
 
     private void AddSpeed()
@@ -27,20 +28,17 @@ public class Ball : MonoBehaviour, IPunObservable
         ballCollider.enabled = true;
         if(PhotonNetwork.IsMasterClient)
         {
-            rb.velocity = new Vector2(Random.Range(minStartSpeed,maxStartSpeed) * Mathf.RoundToInt(Random.Range(-1,1)),Random.Range(minStartSpeed /2,maxStartSpeed/2) * Mathf.RoundToInt(Random.Range(-1,1))); //Adds a random speed to the ball
-
-            //If the velocity x or y of the ball is equal to zero, it will changed to 6
-            if(rb.velocity.x == 0)
+            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(8,10);
+            if(rb.velocity.x is > -2 and < 2)
             {
-                rb.velocity = new Vector2(6,rb.velocity.y); 
+                rb.velocity = new Vector2(6,rb.velocity.y);
             }
-            else if(rb.velocity.y == 0)
+
+            if(rb.velocity.y is > -2 and < 2)
             {
-                rb.velocity = new Vector2(rb.velocity.x,6);
+                rb.velocity = new Vector2(rb.velocity.x,-6);
             }
         }
-
-
     }
 
         //Resets the position of the ball and his velocity

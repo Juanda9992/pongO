@@ -5,7 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine.UI;
-public class Rematcher : MonoBehaviour
+public class Rematcher : MonoBehaviourPunCallbacks
 {
     private int requiredVotes = 2;
     private int currentVotes = 0;
@@ -43,5 +43,9 @@ public class Rematcher : MonoBehaviour
     private void UpdateText()
     {
         retryButtonText.text = "RETRY? " + currentVotes + " / " + requiredVotes; 
+    }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        rematchButton.gameObject.SetActive(false);
     }
 }
