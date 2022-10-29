@@ -59,4 +59,9 @@ public class GameNetwork : MonoBehaviourPunCallbacks
     {
         rematcher.IncreaseVotes();
     }
+
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Invoke("ExitMatch",5);
+    }
 }

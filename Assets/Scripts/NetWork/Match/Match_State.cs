@@ -45,5 +45,7 @@ public class Match_State : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         inGame = false;
+        endMatchText.text = "YOUR RIVAL HAS LEFT THE MATCH";
+        ShowEndMatchPanel();
     }
 }
