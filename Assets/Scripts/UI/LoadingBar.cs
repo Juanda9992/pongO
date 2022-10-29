@@ -15,7 +15,7 @@ public class LoadingBar : MonoBehaviour
 
     public void ShrinkBar(float time)
     {
-        loadingBar.transform.localScale = new Vector2(initialSize,transform.localScale.y);
+        loadingBar.transform.localScale = new Vector2(initialSize,0.3f);
         loadingBar.transform.DOScaleX(0,time); 
     }
 }
