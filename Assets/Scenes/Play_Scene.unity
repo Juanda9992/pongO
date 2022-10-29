@@ -1578,6 +1578,7 @@ GameObject:
   - component: {fileID: 1305771754}
   - component: {fileID: 1305771755}
   - component: {fileID: 1305771756}
+  - component: {fileID: 1305771757}
   m_Layer: 0
   m_Name: Launcher
   m_TagString: Untagged
@@ -1630,6 +1631,20 @@ MonoBehaviour:
   inGame: 1
   endMatchText: {fileID: 1711135376}
   endMatchPanel: {fileID: 954859346}
+--- !u!114 &1305771757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305771753}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ae113dfdaf4c3b49a97b95b93d6cd16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  loadingBar: {fileID: 1638615141}
+  initialSize: 15
 --- !u!1 &1330011988
 GameObject:
   m_ObjectHideFlags: 0
