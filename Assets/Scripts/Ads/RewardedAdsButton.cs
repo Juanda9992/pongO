@@ -4,9 +4,9 @@ using UnityEngine.Advertisements;
  
 public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
-    [SerializeField] Button _showAdButton;
-    [SerializeField] string _androidAdUnitId = "Rewarded_Android";
-    [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
+    [SerializeField] Button _showAdButton; //Button that triggers the ad
+    [SerializeField] string _androidAdUnitId = "Rewarded_Android"; //Id for the ad on android
+    [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";//Id for the ad on Ios
     string _adUnitId = null; // This will remain null for unsupported platforms
  
     void Awake ( ) 
@@ -40,7 +40,7 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         if ( adUnitId . Equals ( _adUnitId ) ) 
         {
             // Configure the button to call the ShowAd() method when clicked:
-            _showAdButton.onClick.AddListener(ShowAd);
+            //_showAdButton.onClick.AddListener(ShowAd);
             // Enable the button for users to click:
             _showAdButton.interactable = true;
         }
