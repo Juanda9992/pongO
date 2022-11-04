@@ -26,7 +26,7 @@ public class Player_Network : MonoBehaviour, IPunObservable
             }
             GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
             sRenderer = GetComponent<SpriteRenderer>();
-            SetColor();
+            view.RPC("SetColor",RpcTarget.AllBuffered);
         }
     }
 
@@ -53,6 +53,7 @@ public class Player_Network : MonoBehaviour, IPunObservable
         return;
     }
 
+    [PunRPC]
     public void SetColor()
     {
         sRenderer.color = ColorRewarder.colorRewarderInst.GetCurrentColor();
