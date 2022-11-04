@@ -9,12 +9,13 @@ public class Button_Unlocker_Checker: MonoBehaviour
     [SerializeField] private Image adImage;
     private RewardedAdsButton rewardedAds;
     public bool isUnlocked = false;
+    private ColorRewarder rewarder;
 
     private void Start()
     {
-       rewardedAds = GameObject.FindObjectOfType<RewardedAdsButton>();
-       adButton = GetComponent<Button>(); 
-       isUnlocked = PlayerPrefs.GetInt(colorId,0) == 1;
+        rewardedAds = GameObject.FindObjectOfType<RewardedAdsButton>();
+        adButton = GetComponent<Button>(); 
+        isUnlocked = PlayerPrefs.GetInt(colorId,0) == 1;
 
        CheckAdImage();
     }
@@ -24,6 +25,10 @@ public class Button_Unlocker_Checker: MonoBehaviour
         if(!isUnlocked)
         {
             rewardedAds.CheckForButton((Button_Unlocker_Checker) this);
+        }
+        else
+        {
+            ColorRewarder.colorRewarderInst.UpdatePlayerColor((Button_Unlocker_Checker) this);
         }
 
         CheckAdImage();
