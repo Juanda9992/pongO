@@ -9,14 +9,19 @@ public class Button_Unlocker_Checker: MonoBehaviour
     [SerializeField] private Image adImage;
     private RewardedAdsButton rewardedAds;
     public bool isUnlocked = false;
+    private ColorRewarder rewarder;
 
     private void Start()
     {
-       rewardedAds = GameObject.FindObjectOfType<RewardedAdsButton>();
-       adButton = GetComponent<Button>(); 
-       isUnlocked = PlayerPrefs.GetInt(colorId,0) == 1;
+        rewardedAds = GameObject.FindObjectOfType<RewardedAdsButton>();
+        adButton = GetComponent<Button>(); 
+        isUnlocked = PlayerPrefs.GetInt(colorId,0) == 1;
 
-       CheckAdImage();
+        if(Application.platform != RuntimePlatform.Android)
+        {
+            isUnlocked = true; //If the user is on PC, all the colors will be avaliables from the start
+        }
+        CheckAdImage();
     }
 
     public void CheckButtonAndShowAd()
@@ -24,6 +29,10 @@ public class Button_Unlocker_Checker: MonoBehaviour
         if(!isUnlocked)
         {
             rewardedAds.CheckForButton((Button_Unlocker_Checker) this);
+        }
+        else
+        {
+            ColorRewarder.colorRewarderInst.UpdatePlayerColor((Button_Unlocker_Checker) this);
         }
 
         CheckAdImage();
