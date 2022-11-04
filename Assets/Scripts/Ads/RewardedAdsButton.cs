@@ -4,10 +4,11 @@ using UnityEngine.Advertisements;
  
 public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShowListener
 {
-    [SerializeField] Button _showAdButton;
-    [SerializeField] string _androidAdUnitId = "Rewarded_Android";
-    [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";
+    [SerializeField] string _androidAdUnitId = "Rewarded_Android"; //Id for the ad on android
+    [SerializeField] string _iOSAdUnitId = "Rewarded_iOS";//Id for the ad on Ios
     string _adUnitId = null; // This will remain null for unsupported platforms
+
+    private Button_Unlocker_Checker checker;
  
     void Awake ( ) 
     {   
@@ -19,9 +20,6 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
 #elif UNITY_EDITOR
         _adUnitId = _androidAdUnitId;
 #endif
-
-        //Disable the button until the ad is ready to show:
-        _showAdButton.interactable = false;
     }
  
     // Load content to the Ad Unit:
@@ -36,21 +34,11 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
     public void OnUnityAdsAdLoaded(string adUnitId)
     {
         Debug.Log("Ad Loaded: " + adUnitId);
- 
-        if ( adUnitId . Equals ( _adUnitId ) ) 
-        {
-            // Configure the button to call the ShowAd() method when clicked:
-            _showAdButton.onClick.AddListener(ShowAd);
-            // Enable the button for users to click:
-            _showAdButton.interactable = true;
-        }
     }
  
     // Implement a method to execute when the user clicks the button:
     public void ShowAd()
     {
-        // Disable the button:
-        _showAdButton.interactable = false;
         // Then show the ad:
         Advertisement.Show(_adUnitId, this);
     }
@@ -62,7 +50,9 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         {
             Debug.Log("Unity Ads Rewarded Ad Completed");
             // Grant a reward.
-
+            checker.isUnlocked = true;
+            PlayerPrefs.SetInt(checker.colorId,1);
+            checker.CheckAdImage();
             // Load another ad:
             Advertisement.Load(_adUnitId, this);
         }
@@ -80,13 +70,16 @@ public class RewardedAdsButton : MonoBehaviour, IUnityAdsLoadListener, IUnityAds
         Debug.Log($"Error showing Ad Unit {adUnitId}: {error.ToString()} - {message}");
         // Use the error details to determine whether to try to load another ad.
     }
+
+    public void CheckForButton(Button_Unlocker_Checker sender)
+    {
+        checker = sender;
+        if(!checker.isUnlocked &&checker != null)
+        {
+            ShowAd();
+        }
+    }
  
     public void OnUnityAdsShowStart(string adUnitId) { }
     public void OnUnityAdsShowClick(string adUnitId) { }
- 
-    void OnDestroy()
-    {
-        // Clean up the button listeners:
-        _showAdButton.onClick.RemoveAllListeners();
-    }
 }
