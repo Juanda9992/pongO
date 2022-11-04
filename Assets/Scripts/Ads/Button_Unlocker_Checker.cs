@@ -17,7 +17,11 @@ public class Button_Unlocker_Checker: MonoBehaviour
         adButton = GetComponent<Button>(); 
         isUnlocked = PlayerPrefs.GetInt(colorId,0) == 1;
 
-       CheckAdImage();
+        if(Application.platform != RuntimePlatform.Android)
+        {
+            isUnlocked = true; //If the user is on PC, all the colors will be avaliables from the start
+        }
+        CheckAdImage();
     }
 
     public void CheckButtonAndShowAd()

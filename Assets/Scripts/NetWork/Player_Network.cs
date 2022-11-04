@@ -6,7 +6,7 @@ using Photon.Pun;
 public class Player_Network : MonoBehaviour, IPunObservable
 {
     private Player_Control myPlayer; //The paddle to control
-
+    private SpriteRenderer sRenderer;
     private PhotonView view;
 
     private Vector2 oldPosition, movement;
@@ -14,7 +14,6 @@ public class Player_Network : MonoBehaviour, IPunObservable
     void Start()
     {
         view = GetComponent<PhotonView>();
-        Debug.Log(view.IsMine);
         if(view.IsMine)
         {
             if(PhotonNetwork.IsMasterClient)
@@ -26,6 +25,8 @@ public class Player_Network : MonoBehaviour, IPunObservable
                 myPlayer = GameNetwork.gameNetworkInstance.player2; //If the user is not the master client, it will control the player 2
             }
             GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
+            sRenderer = GetComponent<SpriteRenderer>();
+            SetColor();
         }
     }
 
@@ -50,6 +51,11 @@ public class Player_Network : MonoBehaviour, IPunObservable
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) 
     {
         return;
+    }
+
+    public void SetColor()
+    {
+        sRenderer.color = ColorRewarder.colorRewarderInst.GetCurrentColor();
     }
 
 }
