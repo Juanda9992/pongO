@@ -8,6 +8,7 @@ public class Player_Network : MonoBehaviour, IPunObservable
     private Player_Control myPlayer; //The paddle to control
     private SpriteRenderer sRenderer;
     private PhotonView view;
+    private Color currentColor;
 
     private Vector2 oldPosition, movement;
     // Start is called before the first frame update
@@ -26,7 +27,8 @@ public class Player_Network : MonoBehaviour, IPunObservable
             }
             GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
             sRenderer = GetComponent<SpriteRenderer>();
-            view.RPC("SetColor",RpcTarget.AllBuffered);
+            currentColor = ColorRewarder.colorRewarderInst.GetCurrentColor();
+            view.RPC("SetColor",RpcTarget.AllBuffered,currentColor);
         }
     }
 
@@ -54,9 +56,12 @@ public class Player_Network : MonoBehaviour, IPunObservable
     }
 
     [PunRPC]
-    public void SetColor()
+    public void SetColor(Color desiredColor)
     {
-        sRenderer.color = ColorRewarder.colorRewarderInst.GetCurrentColor();
+        if(view.IsMine)
+        {
+            sRenderer.color = desiredColor;
+        }
     }
 
 }
