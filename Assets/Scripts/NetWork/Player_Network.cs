@@ -56,11 +56,11 @@ public class Player_Network : MonoBehaviour, IPunObservable
     }
 
     [PunRPC]
-    public void SetColor(Color desiredColor)
+    public void SetColor(Vector3 desiredColor)
     {
         if(view.IsMine)
         {
-            sRenderer.color = desiredColor;
+            sRenderer.color = new Color(desiredColor.x,desiredColor.y,desiredColor.z,1);
         }
     }
 
