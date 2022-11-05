@@ -17,6 +17,7 @@ public class Player_Network : MonoBehaviour, IPunObservable
     void Start()
     {
         view = GetComponent<PhotonView>();
+        sRenderer = GetComponent<SpriteRenderer>();
         if(view.IsMine)
         {
             if(PhotonNetwork.IsMasterClient)
@@ -52,19 +53,10 @@ public class Player_Network : MonoBehaviour, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) 
     {
-        if(stream.IsWriting)
-        {
-            stream.SendNext(transform.position);
-        }
-        else if(stream.IsReading)
-        {
-
-            oldPosition = (Vector2)stream.ReceiveNext();
-        }
+        return;
     }
     private void GetColor()
     {
-        sRenderer = GetComponent<SpriteRenderer>();
         this.currentColor = ColorRewarder.colorRewarderInst.GetCurrentColor();
         string hexColor = ColorUtility.ToHtmlStringRGB(currentColor);
         customProperties["Color"] = hexColor;
@@ -72,24 +64,16 @@ public class Player_Network : MonoBehaviour, IPunObservable
         view.RPC("SetColor",RpcTarget.AllBuffered);
     }
 
-    private void Update() 
-    {
-        if(!view.IsMine)
-        {
-            transform.position = Vector2.MoveTowards(transform.position,oldPosition,myPlayer.speed * Time.deltaTime);
-        }    
-    }
-
     [PunRPC]
     public void SetColor()
     {
-        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList)
-        {
-            string playerHexCode = (string)player.CustomProperties["Color"];
-            ColorUtility.TryParseHtmlString(playerHexCode,out realColor);
-            Debug.Log(realColor);
-            sRenderer.color = realColor;
-        }
+        StartCoroutine("UpdateColor");
+    }
+
+    public IEnumerator UpdateColor()
+    {
+        yield return new WaitForSeconds(1);
+        sRenderer.color = Random.ColorHSV();
 
     }
 
