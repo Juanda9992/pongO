@@ -27,9 +27,9 @@ public class Player_Network : MonoBehaviour, IPunObservable
             {
                 myPlayer = GameNetwork.gameNetworkInstance.player2; //If the user is not the master client, it will control the player 2
             }
+            GetColor();
         }
-            GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
-        GetColor();
+        GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
     }
 
     public void MovePlayerUp()
@@ -52,7 +52,15 @@ public class Player_Network : MonoBehaviour, IPunObservable
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) 
     {
-        return;
+        if(stream.IsWriting)
+        {
+            stream.SendNext(transform.position);
+        }
+        else if(stream.IsReading)
+        {
+
+            oldPosition = (Vector2)stream.ReceiveNext();
+        }
     }
     private void GetColor()
     {
@@ -64,6 +72,14 @@ public class Player_Network : MonoBehaviour, IPunObservable
         view.RPC("SetColor",RpcTarget.AllBuffered);
     }
 
+    private void Update() 
+    {
+        if(!view.IsMine)
+        {
+            transform.position = Vector2.MoveTowards(transform.position,oldPosition,myPlayer.speed * Time.deltaTime);
+        }    
+    }
+
     [PunRPC]
     public void SetColor()
     {
@@ -71,6 +87,7 @@ public class Player_Network : MonoBehaviour, IPunObservable
         {
             string playerHexCode = (string)player.CustomProperties["Color"];
             ColorUtility.TryParseHtmlString(playerHexCode,out realColor);
+            Debug.Log(realColor);
             sRenderer.color = realColor;
         }
 
