@@ -45,7 +45,6 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener, IU
     public void OnUnityAdsAdLoaded(string placementId)
     {
         Debug.Log("OnUnityAdsAdLoaded");
-        Advertisement.Show(placementId,this);
     }
 
     public void OnUnityAdsFailedToLoad(string placementId, UnityAdsLoadError error, string message)
@@ -62,7 +61,6 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener, IU
     {
         Debug.Log("OnUnityAdsShowStart");
         Time.timeScale = 0;
-        Advertisement.Banner.Hide();
     }
 
     public void OnUnityAdsShowClick(string placementId)
@@ -78,31 +76,7 @@ public class AdsInitializer : MonoBehaviour, IUnityAdsInitializationListener, IU
             Debug.Log("rewared Player");
         }
         Time.timeScale = 1;
-        Advertisement.Banner.Show("Banner_Android");
     }
 
-
-
-    public void LoadBannerAd()
-    {
-        Advertisement.Banner.SetPosition(BannerPosition.BOTTOM_CENTER);
-        Advertisement.Banner.Load("Banner_Android",
-            new BannerLoadOptions
-            {
-                loadCallback = OnBannerLoaded,
-                errorCallback = OnBannerError
-            }
-            );
-    }
-
-    void OnBannerLoaded()
-    {
-        Advertisement.Banner.Show("Banner_Android");
-    }
-
-    void OnBannerError(string message)
-    {
-
-    }
 
 }
