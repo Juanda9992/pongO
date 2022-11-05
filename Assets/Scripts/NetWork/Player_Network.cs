@@ -65,7 +65,7 @@ public class Player_Network : MonoBehaviour, IPunObservable
     }
 
     [PunRPC]
-    public void SetColor(Vector3 desiredColor)
+    public void SetColor()
     {
         foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList)
         {
