@@ -8,7 +8,9 @@ public class Player_Network : MonoBehaviour, IPunObservable
     private Player_Control myPlayer; //The paddle to control
     private SpriteRenderer sRenderer;
     private PhotonView view;
-    private Color currentColor;
+    private Color currentColor, realColor;
+
+    private ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
 
     private Vector2 oldPosition, movement;
     // Start is called before the first frame update
@@ -25,11 +27,9 @@ public class Player_Network : MonoBehaviour, IPunObservable
             {
                 myPlayer = GameNetwork.gameNetworkInstance.player2; //If the user is not the master client, it will control the player 2
             }
-            GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
-            sRenderer = GetComponent<SpriteRenderer>();
-            currentColor = ColorRewarder.colorRewarderInst.GetCurrentColor();
-            view.RPC("SetColor",RpcTarget.AllBuffered,new Vector3(currentColor.r,currentColor.g,currentColor.b));
         }
+            GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
+        GetColor();
     }
 
     public void MovePlayerUp()
@@ -54,14 +54,26 @@ public class Player_Network : MonoBehaviour, IPunObservable
     {
         return;
     }
+    private void GetColor()
+    {
+        sRenderer = GetComponent<SpriteRenderer>();
+        this.currentColor = ColorRewarder.colorRewarderInst.GetCurrentColor();
+        string hexColor = ColorUtility.ToHtmlStringRGB(currentColor);
+        customProperties["Color"] = hexColor;
+        PhotonNetwork.LocalPlayer.CustomProperties = customProperties;
+        view.RPC("SetColor",RpcTarget.AllBuffered);
+    }
 
     [PunRPC]
     public void SetColor(Vector3 desiredColor)
     {
-        if(view.IsMine)
+        foreach(Photon.Realtime.Player player in PhotonNetwork.PlayerList)
         {
-            sRenderer.color = new Color(desiredColor.x,desiredColor.y,desiredColor.z,1);
+            string playerHexCode = (string)player.CustomProperties["Color"];
+            ColorUtility.TryParseHtmlString(playerHexCode,out realColor);
+            sRenderer.color = realColor;
         }
+
     }
 
 }
