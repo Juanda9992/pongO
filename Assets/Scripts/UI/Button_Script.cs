@@ -13,10 +13,13 @@ public class Button_Script : MonoBehaviour
 
     public void MovePlayerUp()
     {
+        Debug.Log("Moving Up");
         localPlayer.moveUp();
+        
     }
     public void MovePlayerDown()
     {
+        Debug.Log("Moving Down");
         localPlayer.moveDown();
     }
 
