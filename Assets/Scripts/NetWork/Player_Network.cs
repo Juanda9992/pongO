@@ -6,10 +6,8 @@ using Photon.Pun;
 public class Player_Network : MonoBehaviour, IPunObservable
 {
     private Player_Control myPlayer; //The paddle to control
-    private SpriteRenderer sRenderer;
     private PhotonView view;
     private Color currentColor, realColor;
-
     private ExitGames.Client.Photon.Hashtable customProperties = new ExitGames.Client.Photon.Hashtable();
 
     private Vector2 oldPosition, movement;
@@ -17,7 +15,6 @@ public class Player_Network : MonoBehaviour, IPunObservable
     void Start()
     {
         view = GetComponent<PhotonView>();
-        sRenderer = GetComponent<SpriteRenderer>();
         if(view.IsMine)
         {
             if(PhotonNetwork.IsMasterClient)
@@ -28,9 +25,10 @@ public class Player_Network : MonoBehaviour, IPunObservable
             {
                 myPlayer = GameNetwork.gameNetworkInstance.player2; //If the user is not the master client, it will control the player 2
             }
-            GetColor();
+            GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
         }
-        GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
+            
+        
     }
 
     public void MovePlayerUp()
@@ -54,27 +52,6 @@ public class Player_Network : MonoBehaviour, IPunObservable
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info) 
     {
         return;
-    }
-    private void GetColor()
-    {
-        this.currentColor = ColorRewarder.colorRewarderInst.GetCurrentColor();
-        string hexColor = ColorUtility.ToHtmlStringRGB(currentColor);
-        customProperties["Color"] = hexColor;
-        PhotonNetwork.LocalPlayer.CustomProperties = customProperties;
-        view.RPC("SetColor",RpcTarget.AllBuffered);
-    }
-
-    [PunRPC]
-    public void SetColor()
-    {
-        StartCoroutine("UpdateColor");
-    }
-
-    public IEnumerator UpdateColor()
-    {
-        yield return new WaitForSeconds(1);
-        sRenderer.color = Random.ColorHSV();
-
     }
 
 }
