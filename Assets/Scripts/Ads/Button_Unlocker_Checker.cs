@@ -19,7 +19,7 @@ public class Button_Unlocker_Checker: MonoBehaviour
 
         if(Application.platform != RuntimePlatform.Android)
         {
-            isUnlocked = true; //If the user is on PC, all the colors will be avaliables from the start
+            isUnlocked = false; //If the user is on PC, all the colors will be avaliables from the start
         }
         CheckAdImage();
     }
