@@ -13,13 +13,16 @@ public class Player_Control : MonoBehaviour, IPunObservable
     // Start is called before the first frame update
     void Awake()
     {
-        if(PhotonNetwork.IsMasterClient)
+        if(!PhotonNetwork.OfflineMode)
         {
-            GameNetwork.gameNetworkInstance.player1 = this.GetComponent<Player_Control>(); //If the player is the master client, it will control the player 1
-        }
-        else
-        {
-            GameNetwork.gameNetworkInstance.player2 = this.GetComponent<Player_Control>(); //Else, the local player will be the player 2
+            if(PhotonNetwork.IsMasterClient)
+            {
+                GameNetwork.gameNetworkInstance.player1 = this.GetComponent<Player_Control>(); //If the player is the master client, it will control the player 1
+            }
+            else
+            {
+                GameNetwork.gameNetworkInstance.player2 = this.GetComponent<Player_Control>(); //Else, the local player will be the player 2
+            }
         }
     }
     void Start()
@@ -56,9 +59,12 @@ public class Player_Control : MonoBehaviour, IPunObservable
 
     private void FixedUpdate() 
     {
-        if(!view.IsMine)
+        if(!PhotonNetwork.OfflineMode)
         {
-            rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
+            if(!view.IsMine)
+            {
+                rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
+            }
         }
     }
 

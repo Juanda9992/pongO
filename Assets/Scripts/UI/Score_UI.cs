@@ -34,32 +34,41 @@ public class Score_UI : MonoBehaviour
 
     public void IncreasePlayer1Score()
     {
-        if(state.inGame)
+        if(!PhotonNetwork.OfflineMode)
         {
-            view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.All); //Sends the IncreasePlayer1Score to the other client      
+            if(state.inGame)
+            {
+                view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.All); //Sends the IncreasePlayer1Score to the other client      
+            }
         }
     }
     public void IncreasePlayer2Score()
     {
-        if(state.inGame)
-        {    
-            view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.All); //Sends the increase player 1 score to the other client
+        if(!PhotonNetwork.OfflineMode)
+        {
+            if(state.inGame)
+            {
+                view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.All); //Sends the IncreasePlayer1Score to the other client      
+            }
         }
     }
 
 
     public void UpdateScore()
     {
-        scoreText.text = player1Score.ToString() +"    "+ "-" +"    "+player2Score.ToString();
-        if(state.inGame)
+        if(!PhotonNetwork.OfflineMode)
         {
-            if(player1Score == Room_Stats.Stats_inst.matchPoints)
+            scoreText.text = player1Score.ToString() +"    "+ "-" +"    "+player2Score.ToString();
+            if(state.inGame)
             {
-                state.ChangeTextToWinner();
-            }
-            else if(player2Score == Room_Stats.Stats_inst.matchPoints)
-            {
-                state.ChangeTextToWinner(false);
+                if(player1Score == Room_Stats.Stats_inst.matchPoints)
+                {
+                    state.ChangeTextToWinner();
+                }
+                else if(player2Score == Room_Stats.Stats_inst.matchPoints)
+                {
+                    state.ChangeTextToWinner(false);
+                }
             }
         }
     }

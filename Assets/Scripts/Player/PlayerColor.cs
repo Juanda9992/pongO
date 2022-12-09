@@ -10,17 +10,24 @@ public class PlayerColor : MonoBehaviour
 
     private void Awake() 
     {
-        view = GetComponent<PhotonView>();  
+        if(PhotonNetwork.OfflineMode == false)
+        {
+            view = GetComponent<PhotonView>();  
+        }
         sRenderer = GetComponent<SpriteRenderer>();   
     }
     private void Start() 
     {
-        if(view.IsMine)
+        if(view != null && !PhotonNetwork.OfflineMode)
         {
-            Color currentColor = ColorRewarder.colorRewarderInst.colorToGive;
-            sRenderer.color = currentColor;
-            Vector3 color3 = new Vector3(currentColor.r,currentColor.g,currentColor.b);
-            view.RPC("SetColor",RpcTarget.AllBuffered,color3);
+            if(view.IsMine)
+            {
+
+                Color currentColor = ColorRewarder.colorRewarderInst.colorToGive;
+                sRenderer.color = currentColor;
+                Vector3 color3 = new Vector3(currentColor.r,currentColor.g,currentColor.b);
+                view.RPC("SetColor",RpcTarget.AllBuffered,color3);
+            }
         }
 
     }

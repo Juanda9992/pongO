@@ -4,4 +4,8 @@ using UnityEngine;
 using Photon.Pun;
 public class OfflineManager : MonoBehaviour
 {
+    private void Awake() 
+    {
+        PhotonNetwork.OfflineMode = true;
+    }
 }
