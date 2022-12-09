@@ -687,22 +687,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7383703525420303452, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
   m_PrefabInstance: {fileID: 282400609}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &282400611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 282400610}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88b6042bc9a5d4aa58d931eae49442e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  agentParameters:
-    maxStep: 0
-  hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
 --- !u!114 &282400612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -719,20 +703,55 @@ MonoBehaviour:
     VectorObservationSize: 1
     NumStackedVectorObservations: 1
     m_ActionSpec:
-      m_NumContinuousActions: 0
-      BranchSizes: 03000000
-    VectorActionSize: 03000000
+      m_NumContinuousActions: 1
+      BranchSizes: 
+    VectorActionSize: 01000000
     VectorActionDescriptions: []
-    VectorActionSpaceType: 0
+    VectorActionSpaceType: 1
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 0
+  m_BehaviorType: 1
   m_BehaviorName: Paddle
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
   m_ObservableAttributeHandling: 0
+--- !u!114 &282400618
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282400610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3687be70c8b7f84ab62506e0852dffe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minY: -3.9
+  maxY: 3.9
+  speed: 10
+--- !u!114 &282400619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 282400610}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9c50f1d74facd64982d036a2df9fe0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  rb: {fileID: 0}
+  ballRb: {fileID: 298236484}
+  ballSpeed: {x: 0, y: 0}
+  player_Control: {fileID: 0}
 --- !u!1 &298236483
 GameObject:
   m_ObjectHideFlags: 0
@@ -747,9 +766,10 @@ GameObject:
   - component: {fileID: 298236484}
   - component: {fileID: 298236488}
   - component: {fileID: 298236490}
+  - component: {fileID: 298236491}
   m_Layer: 0
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -892,9 +912,24 @@ MonoBehaviour:
   observableSearch: 2
   ObservedComponents:
   - {fileID: 298236488}
+  - {fileID: 298236491}
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!114 &298236491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 298236483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e29c5a6c5f0c230439ab71b1be2e3f1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minStartSpeed: 4
+  maxStartSpeed: 6
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
