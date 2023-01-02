@@ -13,6 +13,13 @@ public class Player_Control : MonoBehaviour, IPunObservable
     // Start is called before the first frame update
     void Awake()
     {
+
+    }
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+        view = GetComponent<PhotonView>();
+
         if(!PhotonNetwork.OfflineMode)
         {
             if(PhotonNetwork.IsMasterClient)
@@ -24,11 +31,6 @@ public class Player_Control : MonoBehaviour, IPunObservable
                 GameNetwork.gameNetworkInstance.player2 = this.GetComponent<Player_Control>(); //Else, the local player will be the player 2
             }
         }
-    }
-    void Start()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        view = GetComponent<PhotonView>();
     }
 
     public void moveUp()

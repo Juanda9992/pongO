@@ -677,7 +677,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7383703525420303452, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
       propertyPath: m_Name
-      value: Agent
+      value: Player2
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1807729493797717883, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
@@ -685,6 +685,11 @@ PrefabInstance:
 --- !u!1 &282400610 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7383703525420303452, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
+  m_PrefabInstance: {fileID: 282400609}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &282400611 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 1519468750661839003, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
   m_PrefabInstance: {fileID: 282400609}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &282400612
@@ -700,7 +705,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 1
+    VectorObservationSize: 6
     NumStackedVectorObservations: 1
     m_ActionSpec:
       m_NumContinuousActions: 1
@@ -711,8 +716,8 @@ MonoBehaviour:
     hasUpgradedBrainParametersWithActionSpec: 1
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
-  m_BehaviorType: 1
-  m_BehaviorName: Paddle
+  m_BehaviorType: 0
+  m_BehaviorName: PaddleAgent
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -747,11 +752,11 @@ MonoBehaviour:
   agentParameters:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
-  MaxStep: 0
-  rb: {fileID: 0}
+  MaxStep: 1500
+  rb: {fileID: 282400611}
   ballRb: {fileID: 298236484}
-  ballSpeed: {x: 0, y: 0}
-  player_Control: {fileID: 0}
+  ballTransform: {fileID: 298236487}
+  player: {fileID: 282400618}
 --- !u!1 &298236483
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,6 +895,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf351b5ace0ead4ab696070aa28aa51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   minStartSpeed: 4
   maxStartSpeed: 6
 --- !u!114 &298236490
@@ -928,8 +934,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e29c5a6c5f0c230439ab71b1be2e3f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   minStartSpeed: 4
   maxStartSpeed: 6
+  player1: {fileID: 5854812431240776196}
+  player2: {fileID: 282400619}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1318,7 +1327,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &954859347
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3252,10 +3261,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7383703525420303452, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
       propertyPath: m_Name
-      value: Player_Offline
+      value: Player1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
+--- !u!1 &5212389384018103673 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7383703525420303452, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
+  m_PrefabInstance: {fileID: 5212389384018103672}
+  m_PrefabAsset: {fileID: 0}
+--- !u!50 &5212389384018103674 stripped
+Rigidbody2D:
+  m_CorrespondingSourceObject: {fileID: 1519468750661839003, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
+  m_PrefabInstance: {fileID: 5212389384018103672}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &5251824194987723880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3275,12 +3294,62 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1807729493797717883, guid: be349ce2e4bf9804c97a1566798f848a, type: 3}
   m_PrefabInstance: {fileID: 5212389384018103672}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5212389384018103673}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c3687be70c8b7f84ab62506e0852dffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5854812431240776196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212389384018103673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9c50f1d74facd64982d036a2df9fe0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 1500
+  rb: {fileID: 5212389384018103674}
+  ballRb: {fileID: 298236484}
+  ballTransform: {fileID: 298236487}
+  player: {fileID: 5854812431240776195}
+--- !u!114 &5854812431240776197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5212389384018103673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 6
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 1
+      BranchSizes: 
+    VectorActionSize: 01000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 1
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: PaddleAgent
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
 --- !u!1 &8100408383435721201
 GameObject:
   m_ObjectHideFlags: 0

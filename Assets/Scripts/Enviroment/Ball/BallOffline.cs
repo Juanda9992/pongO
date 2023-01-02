@@ -4,22 +4,20 @@ using UnityEngine;
 
 public class BallOffline : Ball
 {
-    private PaddleAgent paddleAgent;
-    void Start()
-    {
-        paddleAgent = GameObject.FindObjectOfType<PaddleAgent>();
-    }
-
+    [SerializeField] private PaddleAgent player1,player2;
     private void OnTriggerEnter2D(Collider2D other) 
     {
         if(other.CompareTag("Left"))
         {
-            paddleAgent.OnGameWin();
+            player1.OnGameLosed();
+            player2.OnGameWin();
         }    
         else if(CompareTag("Right"))
         {
-            paddleAgent.OnGameLosed();
+            player2.OnGameLosed();
+            player1.OnGameWin();
         }
     }
+
 
 }

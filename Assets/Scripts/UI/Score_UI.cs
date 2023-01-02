@@ -41,6 +41,10 @@ public class Score_UI : MonoBehaviour
                 view.RPC("IncreasePlayer1ScoreRPC",RpcTarget.All); //Sends the IncreasePlayer1Score to the other client      
             }
         }
+        else
+        {
+            IncreasePlayer1ScoreRPC();
+        }
     }
     public void IncreasePlayer2Score()
     {
@@ -51,6 +55,11 @@ public class Score_UI : MonoBehaviour
                 view.RPC("IncreasePlayer2ScoreRPC",RpcTarget.All); //Sends the IncreasePlayer1Score to the other client      
             }
         }
+        else
+        {
+            IncreasePlayer2ScoreRPC();
+        }
+
     }
 
 

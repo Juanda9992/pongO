@@ -10,47 +10,38 @@ public class PaddleAgent : Agent
 {
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Rigidbody2D ballRb;
-    [SerializeField] private Vector2 ballSpeed;
-    [SerializeField] private Player_Control player_Control;
+    [SerializeField] private Transform ballTransform;
+    [SerializeField] private Player_Control player;
 
     private void Start() 
     {
-        player_Control = GetComponent<Player_Control>();   
+        rb = GetComponent<Rigidbody2D>();    
     }
+
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(ballSpeed);
-        sensor.AddObservation(ballRb.transform.position);
+        sensor.AddObservation(ballRb.velocity);
+        sensor.AddObservation(ballTransform);
         sensor.AddObservation(transform.position);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        ActionSegment<float> discreteActions = actions.ContinuousActions;
-        Debug.Log(discreteActions);
-        ProcessActions(discreteActions);
-    }
-
-    public void ProcessActions(ActionSegment<float> ActionsToProcess)
-    {
-        float yAxis = ActionsToProcess[0];
-        Debug.Log(yAxis);
-        rb.velocity = transform.up * player_Control.speed * yAxis;
-    }
-
-    public override void Heuristic(in ActionBuffers actionsOut)
-    {
-        ActionSegment<float> discreteActions = actionsOut.ContinuousActions;
-        discreteActions[0] = Input.GetAxisRaw("Vertical");
-        ProcessActions(discreteActions);
+        ActionSegment<float> continuousActions = actions.ContinuousActions;
+        rb.velocity = transform.up * Mathf.Ceil(continuousActions[0]);
+        Debug.Log(continuousActions[0]);
     }
 
     public override void OnEpisodeBegin()
     {
-        Debug.Log(ballRb);
-        ballRb.transform.position = Vector2.zero;
-        ballRb.velocity = Vector2.zero;
-        transform.position = new Vector2(transform.position.x, Random.Range(-3.6f,3.6f));
+        transform.position = new Vector2(transform.position.x,Random.Range(-6,6));
+    }
+
+    public override void Heuristic(in ActionBuffers actionsOut)
+    {
+        Debug.Log("Heuristics");
+        ActionSegment<float> continuousActions = actionsOut.ContinuousActions;
+        continuousActions[0] = Input.GetAxisRaw("Vertical");
     }
 
     public void OnGameWin()
@@ -68,7 +59,7 @@ public class PaddleAgent : Agent
     {
         if(other.transform.CompareTag("Ball"))
         {
-            SetReward(1.0f);
-        }    
+            AddReward(1.0f);
+        }  
     }
 }

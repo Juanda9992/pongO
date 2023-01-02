@@ -6,7 +6,7 @@ using Photon.Pun;
 [RequireComponent(typeof(Rigidbody2D))] //Required Component
 public class Ball : MonoBehaviour, IPunObservable
 {
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private PhotonView view;
     private Match_State state;
     private Vector2 networkPosition;
@@ -26,17 +26,8 @@ public class Ball : MonoBehaviour, IPunObservable
     private void AddSpeed()
     {
         if(PhotonNetwork.IsMasterClient)
-        {
-            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(5,8);
-            if(rb.velocity.x is > -2 and < 2)
-            {
-                rb.velocity = new Vector2(5,rb.velocity.y);
-            }
-
-            if(rb.velocity.y is > -2 and < 2)
-            {
-                rb.velocity = new Vector2(rb.velocity.x,-5);
-            }
+        { 
+            rb.velocity = new Vector2(Random.Range(0,2)*2-1,Random.Range(0,2)*2-1) * Random.Range(5,8);
         }
     }
 
@@ -58,7 +49,14 @@ public class Ball : MonoBehaviour, IPunObservable
 
     private void StopBallRPC()
     {
-        view.RPC("StopBall",RpcTarget.All);
+        if(!PhotonNetwork.OfflineMode)
+        {
+            view.RPC("StopBall",RpcTarget.All);
+        }
+        else
+        {
+            StopBall();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
