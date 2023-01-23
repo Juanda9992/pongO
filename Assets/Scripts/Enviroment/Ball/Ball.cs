@@ -11,23 +11,35 @@ public class Ball : MonoBehaviour, IPunObservable
     private Match_State state;
     private Vector2 networkPosition;
     private LoadingBar bar;
+    private float xTime;
+    private bool ballInited = false;
     [SerializeField] private float minStartSpeed,maxStartSpeed;
     // Start is called before the first frame update
-    private void Awake()
+    private void Start()
     {
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody2D>();
         state = GameObject.FindObjectOfType<Match_State>();
         bar = GameObject.FindObjectOfType<LoadingBar>();
-        Invoke("AddSpeed",3); //Waits 3 seconds before adding speed to the ball
+        StopBall();
 
     }
 
     private void AddSpeed()
     {
+        Debug.Log("The ball is entering here");
+        ballInited = true;
         if(PhotonNetwork.IsMasterClient)
         { 
-            rb.velocity = new Vector2(Random.Range(0,2)*2-1,Random.Range(0,2)*2-1) * Random.Range(5,8);
+            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(6,8);
+            if(Mathf.Abs(rb.velocity.x) < 1.5f)
+            {
+                rb.velocity = new Vector2(6,rb.velocity.y);
+            }
+            else if(Mathf.Abs(rb.velocity.y) <1.5f)
+            {
+                rb.velocity = new Vector2(rb.velocity.x,6);
+            }
         }
     }
 
@@ -35,10 +47,12 @@ public class Ball : MonoBehaviour, IPunObservable
     [PunRPC]
     private void StopBall()
     {
-        bar.ShrinkBar(3);
+        xTime = 0;
+        bar.ShrinkBar();
+        ballInited = false;
         if(state.inGame)
         {
-            transform.position = Vector2.zero;
+            transform.localPosition = Vector2.zero;
             rb.velocity = Vector2.zero;
             if(PhotonNetwork.IsMasterClient)
             {
@@ -81,7 +95,7 @@ public class Ball : MonoBehaviour, IPunObservable
     {
         if(stream.IsWriting) //If we are the master client, we are sending data
         {
-            stream.SendNext(transform.position); //Send the position of the ball
+            stream.SendNext(transform.localPosition); //Send the position of the ball
             stream.SendNext(rb.velocity); //Send the velocity of the ball
         }
         else if(stream.IsReading) //If we are not the master client, we will read the data sended by the master client
@@ -96,9 +110,50 @@ public class Ball : MonoBehaviour, IPunObservable
 
     void FixedUpdate()
     {
+        if(transform.localPosition.x < -13 || transform.localPosition.x > 13 || transform.localPosition.y > 15 || transform.localPosition.y < -15)
+        {
+            StopBall();
+        }
         if(!view.IsMine)
         {
             rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
+        }
+    }
+
+    private void Update() 
+    {
+        if(ballInited)
+        {
+            if(Mathf.Abs(rb.velocity.x) < 0.3f)
+            {
+                xTime+= Time.deltaTime;
+
+                if(xTime >= 3)
+                {
+                    xTime = 0;
+                    StopBall();
+                }
+            }
+            if(Mathf.Abs(rb.velocity.y) < 0.3f)
+            {
+                xTime+= Time.deltaTime;
+
+                if(xTime >= 3)
+                {
+                    xTime = 0;
+                    StopBall();
+                }
+            }
+
+        }
+
+    }
+
+    private void OnCollisionEnter2D() 
+    {
+        if(rb.velocity.magnitude < 13)
+        {
+            rb.velocity *= 1.003f;
         }
     }
 

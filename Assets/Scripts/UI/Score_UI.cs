@@ -80,6 +80,22 @@ public class Score_UI : MonoBehaviour
                 }
             }
         }
+        else
+        {
+            scoreText.text = player1Score.ToString() +"    "+ "-" +"    "+player2Score.ToString();
+            if(state.inGame)
+            {
+                Debug.Log(player1Score == OfflineStatsManager.instance.matchPoints);
+                if(player1Score == OfflineStatsManager.instance.matchPoints)
+                {
+                    state.ChangeTextToWinner();
+                }
+                else if(player2Score == OfflineStatsManager.instance.matchPoints)
+                {
+                    state.ChangeTextToWinner(false);
+                }
+            }
+        }
     }
 
     private void ResetValues()

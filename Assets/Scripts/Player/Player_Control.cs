@@ -35,7 +35,7 @@ public class Player_Control : MonoBehaviour, IPunObservable
 
     public void moveUp()
     {
-        if(transform.position.y < maxY)
+        if(transform.localPosition.y < maxY)
         {    
             rb.velocity = transform.up * speed; //MOves the paddle up
         }
@@ -43,7 +43,7 @@ public class Player_Control : MonoBehaviour, IPunObservable
 
     public void moveDown()
     {
-        if(transform.position.y > minY)
+        if(transform.localPosition.y > minY)
         {
             rb.velocity = -transform.up * speed; //Moves the player down
         }
@@ -56,7 +56,7 @@ public class Player_Control : MonoBehaviour, IPunObservable
 
     void Update()
     {
-        transform.position = new Vector2(transform.position.x,Mathf.Clamp(transform.position.y,minY,maxY)); //Clamps the position of the player to not move outside the map
+        transform.localPosition = new Vector2(transform.localPosition.x,Mathf.Clamp(transform.localPosition.y,minY,maxY)); //Clamps the position of the player to not move outside the map
     }
 
     private void FixedUpdate() 
