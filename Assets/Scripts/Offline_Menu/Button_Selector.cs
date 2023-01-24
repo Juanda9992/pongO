@@ -6,7 +6,7 @@ using TMPro;
 public class Button_Selector : MonoBehaviour
 {
     [SerializeField] private Button currentButton;
-    private TextMeshProUGUI buttonText;
+    [SerializeField] private TextMeshProUGUI buttonText;
 
     public void UpdateButton(Button desiredButton)
     {

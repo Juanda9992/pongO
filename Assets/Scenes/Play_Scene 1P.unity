@@ -606,8 +606,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 135427c69ca9fd14c9a77c60701078cc, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -3156,6 +3156,7 @@ GameObject:
   - component: {fileID: 5909281469819180722}
   - component: {fileID: 7862343394814572680}
   - component: {fileID: 9133196521561770470}
+  - component: {fileID: 9133196521561770471}
   m_Layer: 0
   m_Name: AI
   m_TagString: Untagged
@@ -3351,3 +3352,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9edf63f0b68689c4ca7d84bf3415356f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &9133196521561770471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3273988741217883541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1ff2061fa61f6640a9dc3cd8fa9c395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  easySpeed: 2.3
+  hardSpeed: 4.1
+  ballPos: {fileID: 298236487}

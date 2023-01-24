@@ -31,14 +31,14 @@ public class Ball : MonoBehaviour, IPunObservable
         ballInited = true;
         if(PhotonNetwork.IsMasterClient)
         { 
-            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(6,8);
-            if(Mathf.Abs(rb.velocity.x) < 1.5f)
+            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(7,8);
+            if(Mathf.Abs(rb.velocity.x) < 1.8f)
             {
-                rb.velocity = new Vector2(6,rb.velocity.y);
+                rb.velocity = new Vector2(7,rb.velocity.y);
             }
-            else if(Mathf.Abs(rb.velocity.y) <1.5f)
+            else if(Mathf.Abs(rb.velocity.y) <1.8f)
             {
-                rb.velocity = new Vector2(rb.velocity.x,6);
+                rb.velocity = new Vector2(rb.velocity.x,7);
             }
         }
     }
@@ -118,6 +118,7 @@ public class Ball : MonoBehaviour, IPunObservable
         {
             rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
         }
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity,15);    
     }
 
     private void Update() 
@@ -149,12 +150,12 @@ public class Ball : MonoBehaviour, IPunObservable
 
     }
 
-    private void OnCollisionEnter2D() 
+    private void OnCollisionEnter2D(Collision2D collision2D) 
     {
-        if(rb.velocity.magnitude < 13)
-        {
-            rb.velocity *= 1.003f;
-        }
+        Vector2 contactPoint2D = collision2D.GetContact(0).normal;
+        if(Mathf.Abs(rb.velocity.x) < 3.5f) {rb.velocity+=  new Vector2(rb.velocity.x * 0.04f,rb.velocity.y * -0.01f);Debug.Log("LessX");}
+        else if(Mathf.Abs(rb.velocity.y) < 3.5f){rb.velocity+=  new Vector2(rb.velocity.x * -0.01f,rb.velocity.y * 0.03f);Debug.Log("LessY");};
+        
     }
 
     private void OnEnable()
