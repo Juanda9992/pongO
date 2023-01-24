@@ -7,15 +7,10 @@ public class LoadingBar : MonoBehaviour
 {
     [SerializeField] private GameObject loadingBar;
     [SerializeField] private float initialSize = 15;
-
-    private void Start() 
+    public void ShrinkBar()
     {
-        ShrinkBar(4);
-    }
-
-    public void ShrinkBar(float time)
-    {
+        DOTween.Kill(transform);
         loadingBar.transform.localScale = new Vector2(initialSize,0.3f);
-        loadingBar.transform.DOScaleX(0,time); 
+        loadingBar.transform.DOScaleX(0,3); 
     }
 }

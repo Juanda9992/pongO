@@ -6,36 +6,39 @@ using Photon.Pun;
 [RequireComponent(typeof(Rigidbody2D))] //Required Component
 public class Ball : MonoBehaviour, IPunObservable
 {
-    private Rigidbody2D rb;
+    [HideInInspector] public Rigidbody2D rb;
     private PhotonView view;
     private Match_State state;
     private Vector2 networkPosition;
     private LoadingBar bar;
+    private float xTime;
+    private bool ballInited = false;
     [SerializeField] private float minStartSpeed,maxStartSpeed;
     // Start is called before the first frame update
-    private void Awake()
+    private void Start()
     {
         view = GetComponent<PhotonView>();
         rb = GetComponent<Rigidbody2D>();
         state = GameObject.FindObjectOfType<Match_State>();
         bar = GameObject.FindObjectOfType<LoadingBar>();
-        Invoke("AddSpeed",3); //Waits 3 seconds before adding speed to the ball
+        StopBall();
 
     }
 
     private void AddSpeed()
     {
+        Debug.Log("The ball is entering here");
+        ballInited = true;
         if(PhotonNetwork.IsMasterClient)
-        {
-            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(5,8);
-            if(rb.velocity.x is > -2 and < 2)
+        { 
+            rb.velocity = Random.insideUnitCircle.normalized * Random.Range(7,8);
+            if(Mathf.Abs(rb.velocity.x) < 1.8f)
             {
-                rb.velocity = new Vector2(5,rb.velocity.y);
+                rb.velocity = new Vector2(7,rb.velocity.y);
             }
-
-            if(rb.velocity.y is > -2 and < 2)
+            else if(Mathf.Abs(rb.velocity.y) <1.8f)
             {
-                rb.velocity = new Vector2(rb.velocity.x,-5);
+                rb.velocity = new Vector2(rb.velocity.x,7);
             }
         }
     }
@@ -44,10 +47,12 @@ public class Ball : MonoBehaviour, IPunObservable
     [PunRPC]
     private void StopBall()
     {
-        bar.ShrinkBar(3);
+        xTime = 0;
+        bar.ShrinkBar();
+        ballInited = false;
         if(state.inGame)
         {
-            transform.position = Vector2.zero;
+            transform.localPosition = Vector2.zero;
             rb.velocity = Vector2.zero;
             if(PhotonNetwork.IsMasterClient)
             {
@@ -58,7 +63,14 @@ public class Ball : MonoBehaviour, IPunObservable
 
     private void StopBallRPC()
     {
-        view.RPC("StopBall",RpcTarget.All);
+        if(!PhotonNetwork.OfflineMode)
+        {
+            view.RPC("StopBall",RpcTarget.All);
+        }
+        else
+        {
+            StopBall();
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -83,7 +95,7 @@ public class Ball : MonoBehaviour, IPunObservable
     {
         if(stream.IsWriting) //If we are the master client, we are sending data
         {
-            stream.SendNext(transform.position); //Send the position of the ball
+            stream.SendNext(transform.localPosition); //Send the position of the ball
             stream.SendNext(rb.velocity); //Send the velocity of the ball
         }
         else if(stream.IsReading) //If we are not the master client, we will read the data sended by the master client
@@ -98,10 +110,52 @@ public class Ball : MonoBehaviour, IPunObservable
 
     void FixedUpdate()
     {
+        if(transform.localPosition.x < -13 || transform.localPosition.x > 13 || transform.localPosition.y > 15 || transform.localPosition.y < -15)
+        {
+            StopBall();
+        }
         if(!view.IsMine)
         {
             rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
         }
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity,15);    
+    }
+
+    private void Update() 
+    {
+        if(ballInited)
+        {
+            if(Mathf.Abs(rb.velocity.x) < 0.3f)
+            {
+                xTime+= Time.deltaTime;
+
+                if(xTime >= 3)
+                {
+                    xTime = 0;
+                    StopBall();
+                }
+            }
+            if(Mathf.Abs(rb.velocity.y) < 0.3f)
+            {
+                xTime+= Time.deltaTime;
+
+                if(xTime >= 3)
+                {
+                    xTime = 0;
+                    StopBall();
+                }
+            }
+
+        }
+
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision2D) 
+    {
+        Vector2 contactPoint2D = collision2D.GetContact(0).normal;
+        if(Mathf.Abs(rb.velocity.x) < 3.5f) {rb.velocity+=  new Vector2(rb.velocity.x * 0.04f,rb.velocity.y * -0.01f);Debug.Log("LessX");}
+        else if(Mathf.Abs(rb.velocity.y) < 3.5f){rb.velocity+=  new Vector2(rb.velocity.x * -0.01f,rb.velocity.y * 0.03f);Debug.Log("LessY");};
+        
     }
 
     private void OnEnable()

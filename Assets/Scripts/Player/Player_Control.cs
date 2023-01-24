@@ -13,24 +13,29 @@ public class Player_Control : MonoBehaviour, IPunObservable
     // Start is called before the first frame update
     void Awake()
     {
-        if(PhotonNetwork.IsMasterClient)
-        {
-            GameNetwork.gameNetworkInstance.player1 = this.GetComponent<Player_Control>(); //If the player is the master client, it will control the player 1
-        }
-        else
-        {
-            GameNetwork.gameNetworkInstance.player2 = this.GetComponent<Player_Control>(); //Else, the local player will be the player 2
-        }
+
     }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         view = GetComponent<PhotonView>();
+
+        if(!PhotonNetwork.OfflineMode)
+        {
+            if(PhotonNetwork.IsMasterClient)
+            {
+                GameNetwork.gameNetworkInstance.player1 = this.GetComponent<Player_Control>(); //If the player is the master client, it will control the player 1
+            }
+            else
+            {
+                GameNetwork.gameNetworkInstance.player2 = this.GetComponent<Player_Control>(); //Else, the local player will be the player 2
+            }
+        }
     }
 
     public void moveUp()
     {
-        if(transform.position.y < maxY)
+        if(transform.localPosition.y < maxY)
         {    
             rb.velocity = transform.up * speed; //MOves the paddle up
         }
@@ -38,7 +43,7 @@ public class Player_Control : MonoBehaviour, IPunObservable
 
     public void moveDown()
     {
-        if(transform.position.y > minY)
+        if(transform.localPosition.y > minY)
         {
             rb.velocity = -transform.up * speed; //Moves the player down
         }
@@ -51,14 +56,17 @@ public class Player_Control : MonoBehaviour, IPunObservable
 
     void Update()
     {
-        transform.position = new Vector2(transform.position.x,Mathf.Clamp(transform.position.y,minY,maxY)); //Clamps the position of the player to not move outside the map
+        transform.localPosition = new Vector2(transform.localPosition.x,Mathf.Clamp(transform.localPosition.y,minY,maxY)); //Clamps the position of the player to not move outside the map
     }
 
     private void FixedUpdate() 
     {
-        if(!view.IsMine)
+        if(!PhotonNetwork.OfflineMode)
         {
-            rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
+            if(!view.IsMine)
+            {
+                rb.position = Vector2.MoveTowards(rb.position, networkPosition, Time.fixedDeltaTime); //Smoothly moves the ball to the network position
+            }
         }
     }
 

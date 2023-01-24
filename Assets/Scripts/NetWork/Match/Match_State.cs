@@ -12,10 +12,8 @@ public class Match_State : MonoBehaviourPunCallbacks
     [SerializeField] private TextMeshProUGUI endMatchText;
 
     [SerializeField] private GameObject endMatchPanel;
-    private Rematcher rematcher;
-
     public delegate void onRestartMatch();
-    public event onRestartMatch OnRestartMatch; 
+    public event onRestartMatch OnRestartMatch;
     public void ShowEndMatchPanel()
     {
         endMatchPanel.SetActive(true);

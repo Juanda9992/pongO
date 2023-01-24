@@ -27,6 +27,7 @@ public class Player_Network : MonoBehaviour, IPunObservable
             }
             GameObject.FindObjectOfType<Button_Script>().localPlayer = myPlayer; //Tell the UI button to control the asigned player
         }
+        
             
         
     }

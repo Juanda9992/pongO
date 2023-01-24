@@ -25,6 +25,7 @@ public class Button_Script : MonoBehaviour
 
     public void StopMovingPlayer()
     {
+        Debug.Log("NotMoving");
         localPlayer.StopMoving();
     }
 }

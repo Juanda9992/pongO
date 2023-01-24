@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine.UI;
 public class Rematcher : MonoBehaviourPunCallbacks
 {
-    private int requiredVotes = 2;
+    private int requiredVotes = 1;
     private int currentVotes = 0;
     [SerializeField] private TextMeshProUGUI retryButtonText;
     [SerializeField] private Button rematchButton;
@@ -42,7 +42,10 @@ public class Rematcher : MonoBehaviourPunCallbacks
 
     private void UpdateText()
     {
-        retryButtonText.text = "RETRY? " + currentVotes + " / " + requiredVotes; 
+        if(!PhotonNetwork.OfflineMode)
+        {
+            retryButtonText.text = "RETRY? " + currentVotes + " / " + requiredVotes; 
+        }
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
