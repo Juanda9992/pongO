@@ -1123,7 +1123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _androidGameId: 5003203
   _iOSGameId: 5003202
-  _testMode: 1
+  _testMode: 0
   rewardedAds: {fileID: 133324664}
 --- !u!4 &133324666
 Transform:
