@@ -82,7 +82,7 @@ public class Score_UI : MonoBehaviour
         }
         else
         {
-            scoreText.text = player1Score.ToString() +"    "+ "-" +"    "+player2Score.ToString();
+            scoreText.text = player1Score.ToString() +"    "+ "  " +"    "+player2Score.ToString();
             if(state.inGame)
             {
                 Debug.Log(player1Score == OfflineStatsManager.instance.matchPoints);
