@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun; //Photon Pun namespace
 using Photon.Realtime;
+using Photon;
 public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network Callbacks
 {
     [SerializeField] private LauncherUI launcherUI;
@@ -27,12 +28,19 @@ public class Launcher : MonoBehaviourPunCallbacks //Class wich contains Network 
         }
     }
 
+    public void OnConectionFailed()
+    {
+        PhotonNetwork.Disconnect();
+        launcherUI.HidePanelsOnDisconect();
+        launcherUI.UpdateLogText("The connection has failed");
+    }
+
     public override void OnConnectedToMaster()
     {
+        CancelInvoke("OnConectionFailed");
         PhotonNetwork.JoinLobby(); //When the player connects to the server it automatically will join to a lobby
         launcherUI.showRoomPanel(); //Shows Room Menu
     }
-
     public void SetRoomName(string name)
     {
         roomName = name;
