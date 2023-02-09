@@ -7,7 +7,7 @@ using TMPro;
 using UnityEngine.UI;
 public class Rematcher : MonoBehaviourPunCallbacks
 {
-    private int requiredVotes = 1;
+    private int requiredVotes = 2;
     private int currentVotes = 0;
     [SerializeField] private TextMeshProUGUI retryButtonText;
     [SerializeField] private Button rematchButton;
@@ -19,6 +19,10 @@ public class Rematcher : MonoBehaviourPunCallbacks
         state = GameObject.FindObjectOfType<Match_State>();
         view = GetComponent<PhotonView>();
         UpdateText();
+        if(PhotonNetwork.OfflineMode)
+        {
+            requiredVotes = 1;
+        }
     }
 
     [PunRPC]

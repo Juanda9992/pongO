@@ -27,7 +27,7 @@ public class Ball : MonoBehaviour, IPunObservable
 
     private void AddSpeed()
     {
-        Debug.Log("The ball is entering here");
+        Audio_Manager.instance.PlaySound("Ball_Launch");
         ballInited = true;
         if(PhotonNetwork.IsMasterClient)
         { 
@@ -75,6 +75,7 @@ public class Ball : MonoBehaviour, IPunObservable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        Audio_Manager.instance.PlaySound("Ball_Score");
         if(view.IsMine)
         {
             if(other.CompareTag("Left"))
@@ -152,6 +153,7 @@ public class Ball : MonoBehaviour, IPunObservable
 
     private void OnCollisionEnter2D(Collision2D collision2D) 
     {
+        Audio_Manager.instance.PlaySound("Ball_Hit");
         Vector2 contactPoint2D = collision2D.GetContact(0).normal;
         if(Mathf.Abs(rb.velocity.x) < 3.5f) {rb.velocity+=  new Vector2(rb.velocity.x * 0.04f,rb.velocity.y * -0.01f);Debug.Log("LessX");}
         else if(Mathf.Abs(rb.velocity.y) < 3.5f){rb.velocity+=  new Vector2(rb.velocity.x * -0.01f,rb.velocity.y * 0.03f);Debug.Log("LessY");};
