@@ -10,4 +10,6 @@ public class SaveModel : ScriptableObject
 
     public List<bool> colorUnlocked = new List<bool>();
 
+    public bool buttonsFlipped = false;
+
 }
