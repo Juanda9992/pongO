@@ -8,6 +8,6 @@ public class SaveModel : ScriptableObject
     public int matchesLoss;
     public Vector3 color;
 
-    public List<bool> colorUnlocked;
+    public List<bool> colorUnlocked = new List<bool>();
 
 }
