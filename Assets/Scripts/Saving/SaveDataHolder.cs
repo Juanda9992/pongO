@@ -12,7 +12,7 @@ public class SaveDataHolder : MonoBehaviour
         instance = this;
         if(saveModel.colorUnlocked.Count == 0)
         {
-            saveModel.colorUnlocked = new List<bool>(new bool[10]);
+            saveModel.colorUnlocked = new List<bool>(new bool[12]);
         }    
     }
 }
