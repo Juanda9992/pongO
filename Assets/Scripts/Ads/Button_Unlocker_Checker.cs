@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class Button_Unlocker_Checker: MonoBehaviour
 {
     private Button adButton;
-    public string colorId;
     [SerializeField] private Image adImage;
     public int index;
     private RewardedAdsButton rewardedAds;
@@ -42,7 +41,6 @@ public class Button_Unlocker_Checker: MonoBehaviour
         if(isUnlocked)
         {
             adImage.enabled = false;
-            PlayerPrefs.SetInt(colorId,1);
         }
     }
 }
