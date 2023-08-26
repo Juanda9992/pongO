@@ -8,7 +8,7 @@ public class ButtonsFlipper : MonoBehaviour
 
     private void Start() 
     {
-        flipped = PlayerPrefs.GetInt("Flipped",0) == 1;
+        flipped = SaveDataHolder.instance.saveModel.buttonsFlipped;
 
         if(flipped)
         {
