@@ -20,11 +20,18 @@ public class ColorRewarder : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        colorToGive = Color.white;
     }
     private void Start() 
     {
-        colorToGive = new Color(saveModel.color.x,saveModel.color.y,saveModel.color.z,1);
+        if(saveModel.color == Vector3.zero)
+        {
+            colorToGive = Color.white;
+        }
+        else
+        {
+            colorToGive = new Color(saveModel.color.x,saveModel.color.y,saveModel.color.z,1);
+        }
+
     }
 
     public void UpdatePlayerColor(Button_Unlocker_Checker checker)
