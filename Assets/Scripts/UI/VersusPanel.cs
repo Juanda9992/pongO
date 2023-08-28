@@ -11,6 +11,6 @@ public class VersusPanel : MonoBehaviour
     private void OnEnable() 
     {
         player1.text = PhotonNetwork.NickName;
-        player2.text = PhotonNetwork.CurrentRoom.Players[1].NickName;    
+        player2.text = PhotonNetwork.PlayerListOthers[0].NickName;
     }
 }

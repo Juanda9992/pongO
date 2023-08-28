@@ -90,7 +90,9 @@ public class LauncherUI : MonoBehaviourPunCallbacks
     public IEnumerator StartRandomMatch()
     {
         versusPanel.SetActive(true);
+        conectingText.text = "";
         yield return new WaitForSeconds(5);
+        versusPanel.SetActive(false);
         conectingText.text = "THE MATCH WILL BE " + Room_Stats.Stats_inst.matchPoints + " POINTS";
         yield return new WaitForSeconds(3);
         if(PhotonNetwork.IsMasterClient)
