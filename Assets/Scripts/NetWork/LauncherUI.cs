@@ -12,6 +12,8 @@ public class LauncherUI : MonoBehaviourPunCallbacks
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI conectedToRegionText, conectingText,logText; //All the text
 
+    [SerializeField] private GameObject versusPanel;
+
     public void showRoomPanel()
     {
         conectingText.gameObject.SetActive(false);
@@ -87,7 +89,8 @@ public class LauncherUI : MonoBehaviourPunCallbacks
 
     public IEnumerator StartRandomMatch()
     {
-        yield return new WaitForSeconds(1);
+        versusPanel.SetActive(true);
+        yield return new WaitForSeconds(5);
         conectingText.text = "THE MATCH WILL BE " + Room_Stats.Stats_inst.matchPoints + " POINTS";
         yield return new WaitForSeconds(3);
         if(PhotonNetwork.IsMasterClient)
