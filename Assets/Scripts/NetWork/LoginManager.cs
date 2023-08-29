@@ -24,6 +24,8 @@ public class LoginManager : MonoBehaviour
         if(nameInput.text.Length > 0)
         {
             GoToNextPanel();
+            saveModel.nickName = nameInput.text;
+            SaveManager.instance.Save();
         }
         else
         {
@@ -33,8 +35,7 @@ public class LoginManager : MonoBehaviour
 
     public void GoToNextPanel()
     {
-        PhotonNetwork.NickName = nameInput.text;
-        saveModel.nickName = nameInput.text;
+        PhotonNetwork.NickName = saveModel.nickName;
         nextPanel.SetActive(true);
         currentPanel.SetActive(false);
     }
