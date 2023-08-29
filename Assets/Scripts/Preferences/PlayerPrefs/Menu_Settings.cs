@@ -15,4 +15,10 @@ public class Menu_Settings : MonoBehaviour
     {
         SaveDataHolder.instance.saveModel.buttonsFlipped= buttonsFlipped.isOn;
     }
+
+    public void DeleteProgress()
+    {
+        PlayerPrefs.DeleteAll();
+        Debug.Log("Progress deleted");
+    }
 }
