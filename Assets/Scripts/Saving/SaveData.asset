@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75cd602ea6df4ad46aa4ba16d8873d02, type: 3}
   m_Name: SaveData
   m_EditorClassIdentifier: 
+  nickName: 
   matchesWin: 0
   matchesLoss: 0
-  color: {x: 1, y: 0.495283, z: 0.9923309}
-  colorUnlocked: 01000000000100000001
+  color: {x: 0, y: 0, z: 0}
+  colorUnlocked: 
   buttonsFlipped: 0
