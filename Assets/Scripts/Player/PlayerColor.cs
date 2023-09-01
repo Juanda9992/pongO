@@ -29,6 +29,11 @@ public class PlayerColor : MonoBehaviour
                 view.RPC("SetColor",RpcTarget.AllBuffered,color3);
             }
         }
+        
+        if(PhotonNetwork.OfflineMode)
+        {
+            sRenderer.color = ColorRewarder.colorRewarderInst.colorToGive;
+        }
 
     }
 
