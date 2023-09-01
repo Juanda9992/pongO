@@ -50,8 +50,8 @@ public class GameNetwork : MonoBehaviourPunCallbacks
     }
     public override void OnLeftRoom()
     {
+        SaveManager.instance.Save();
         PhotonNetwork.Disconnect();
-        Debug.Log(PhotonNetwork.InRoom);
         SceneManager.LoadScene(0);
     }
 
